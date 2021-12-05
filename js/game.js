@@ -31,7 +31,7 @@ var grateColor = Colors.brownDark;
 var doorColor = Colors.brown;
 var handleColor = Colors.brownDark;
 var _previousRAF = null;
-var camStartingPos = new THREE.Vector3(0, 400, 500);
+var camStartingPos = new THREE.Vector3(0, 400, 450);
 
 /********** End step 0 **********/
 
@@ -84,7 +84,7 @@ function createScene() {
 
 	// Add a fog effect to the scene; same color as the
 	// background color used in the style sheet
-	scene.fog = new THREE.Fog(0xbadbe4, 500, 900);
+	scene.fog = new THREE.Fog(0xbadbe4, 700, 1000);
 
 	// Create the camera
 	aspectRatio = WIDTH / HEIGHT;
@@ -385,7 +385,7 @@ function createCar() {
  * Create simple green, rectangular ground
  */
 function createGround() {
-    ground = createBox( 800, 20, 500, Colors.greenDark, 0, -10, 0 );
+    ground = createBox( 3000, 20, 3000, Colors.greenDark, 0, 0, 0 );
     scene.add(ground);
 }
 
@@ -687,11 +687,11 @@ function startTimer() {
 }
 
 function updateTimer() {
-    time -= 1;
+    // time -= 1;
     updateTimeDisplay();
 
     // Added in step 2
-    fuelLeft -= 5;
+    // fuelLeft -= 5;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
