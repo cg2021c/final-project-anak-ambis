@@ -1,3 +1,4 @@
+// import * as gltfloader from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/GLTFLoader.js';
 /**
  *
  * KARS
@@ -33,6 +34,8 @@ var handleColor = Colors.brownDark;
 var _previousRAF = null;
 var camStartingPos = new THREE.Vector3(0, 400, 450);
 var shadowStartingPos = new THREE.Vector3(150, 350, 350);
+var loader;
+var mesh_import;
 
 /********** End step 0 **********/
 
@@ -40,7 +43,6 @@ function init() {
 
 	// set up the scene, the camera and the renderer
 	createScene();
-
 	// add the lights
 	createLights();
 
@@ -51,6 +53,7 @@ function init() {
 
     // add controls
     createControls();
+    createLoader();
 
     // reset game
     resetGame();
@@ -58,6 +61,32 @@ function init() {
 	// start a loop that will update the objects' positions
 	// and render the scene on each frame
 	loop();
+}
+
+function createLoader() {
+    loader = new THREE.GLTFLoader ();
+    loader.load('js/src/try.gltf', handle_glb);
+}
+
+function handle_glb(glb){
+    handle_load(glb, 0, 25, 50, 100);
+}
+
+//load biasa
+function handle_load(gltf, x, y, z,sc) {
+    console.log(gltf);
+    mesh_import = gltf.scene;
+    // console.log(mesh.children[0]);
+    mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
+    mesh_import.children[1].material = new THREE.MeshPhongMaterial({color: Colors.green});
+    mesh_import.children[2].material = new THREE.MeshPhongMaterial({color: Colors.blue});
+    mesh_import.scale.set(sc, sc, sc);    
+    mesh_import.position.z = z;
+    mesh_import.position.x = x;
+    mesh_import.position.y = y;
+    mesh_import.castShadow = true;
+    mesh_import.receiveShadow = true;
+    scene.add( mesh_import );
 }
 
 /**
@@ -181,6 +210,7 @@ function createLights() {
 	// to activate the lights, just add them to the scene
 	scene.add(hemisphereLight);
 	scene.add(shadowLight);
+    
 }
 
 /**
