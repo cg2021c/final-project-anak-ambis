@@ -32,6 +32,7 @@ var doorColor = Colors.brown;
 var handleColor = Colors.brownDark;
 var _previousRAF = null;
 var camStartingPos = new THREE.Vector3(0, 400, 450);
+var shadowStartingPos = new THREE.Vector3(150, 350, 350);
 
 /********** End step 0 **********/
 
@@ -159,7 +160,7 @@ function createLights() {
 	shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 
 	// Set the direction of the light
-	shadowLight.position.set(150, 350, 350);
+	shadowLight.position.set(1500, 3500, 3500);
 
 	// Allow shadow casting
 	shadowLight.castShadow = true;
@@ -170,7 +171,7 @@ function createLights() {
 	shadowLight.shadow.camera.top = 400;
 	shadowLight.shadow.camera.bottom = -400;
 	shadowLight.shadow.camera.near = 1;
-	shadowLight.shadow.camera.far = 1000;
+	shadowLight.shadow.camera.far = 20000;
 
 	// define the resolution of the shadow; the higher the better,
 	// but also the more expensive and less performant
@@ -473,6 +474,15 @@ function updateCamPos() {
     camera.position.copy( newPos );
 }
 
+function updateRenderShadowPos(){
+    var newPos = new THREE.Vector3(shadowStartingPos.x, shadowStartingPos.y, shadowStartingPos.z);
+    newPos.add( car.mesh.position );
+    shadowLight.position.copy(newPos);
+    shadowLight.target.position.copy( car.mesh.position );
+    shadowLight.updateMatrixWorld();
+    shadowLight.target.updateMatrixWorld();
+}
+
 /**
  *
  * MECHANICS
@@ -492,6 +502,8 @@ function loop() {
 	// render the scene
 	renderer.render(scene, camera);
     updateCamPos();
+    updateRenderShadowPos();
+    
     // console.log( car.mesh.position );
     // camera.position.copy( car.mesh.position )
 	// scene.rotation.y += 0.0025
