@@ -65,7 +65,7 @@ function init() {
 
 function createLoader() {
     loader = new THREE.GLTFLoader ();
-    loader.load('js/src/try.gltf', handle_glb);
+    loader.load('../assets/try.gltf', handle_glb);
 }
 
 function handle_glb(glb){
