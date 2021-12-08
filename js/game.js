@@ -1,4 +1,8 @@
 // import * as gltfloader from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from './three.module.js';
+import { GLTFLoader } from "./GLTFLoader.js";
+import { OBJLoader } from './OBJLoader.js';
+import { MTLLoader } from './MTLLoader.js';
 /**
  *
  * KARS
@@ -53,7 +57,8 @@ function init() {
 
     // add controls
     createControls();
-    createLoader();
+    // createLoader();
+    loadObj();
 
     // reset game
     resetGame();
@@ -63,9 +68,41 @@ function init() {
 	loop();
 }
 
+function loadObj(){
+    var objLoader = new OBJLoader();
+    var mtlLoader = new MTLLoader();
+    var objMesh;
+    var materials;
+
+    mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function (mtl) {
+        console.log(mtl)
+        materials = mtl
+    })
+
+    // objLoader.setMaterials(materials);
+    objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function (object) {
+
+        console.log(object)
+
+        objMesh = object;
+        objMesh.position.x = 50;
+        objMesh.position.y = 45;
+        objMesh.rotation.y = 20
+        objMesh.scale.x = 0.2;
+        objMesh.scale.y = 0.2;
+        objMesh.scale.z = 0.2;
+
+        scene.add(objMesh);            
+    });
+
+    var truck = new THREE.Mesh(objMesh, materials)
+    scene.add(truck)
+}
+
 function createLoader() {
-    loader = new THREE.GLTFLoader ();
+    loader = new GLTFLoader ();
     loader.load('../assets/try.gltf', handle_glb);
+    // loader.load('../assets/truck/scene.gltf', handle_glb);
 }
 
 function handle_glb(glb){
@@ -77,9 +114,9 @@ function handle_load(gltf, x, y, z,sc) {
     console.log(gltf);
     mesh_import = gltf.scene;
     // console.log(mesh.children[0]);
-    mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
-    mesh_import.children[1].material = new THREE.MeshPhongMaterial({color: Colors.green});
-    mesh_import.children[2].material = new THREE.MeshPhongMaterial({color: Colors.blue});
+    // mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
+    // mesh_import.children[1].material = new THREE.MeshPhongMaterial({color: Colors.green});
+    // mesh_import.children[2].material = new THREE.MeshPhongMaterial({color: Colors.blue});
     mesh_import.scale.set(sc, sc, sc);    
     mesh_import.position.z = z;
     mesh_import.position.x = x;
@@ -576,7 +613,7 @@ function createControls() {
     document.addEventListener(
         'keydown',
         function( ev ) {
-            key = ev.keyCode;
+            var key = ev.keyCode;
 
             if (key == left) {
                 car.turnLeft();
@@ -596,7 +633,7 @@ function createControls() {
     document.addEventListener(
         'keyup',
         function( ev ) {
-            key = ev.keyCode;
+            var key = ev.keyCode;
 
             if (key == left) {
                 car.stopLeft();
@@ -642,9 +679,9 @@ function checkCollisions() {
 }
 
 function objectInBound(object, objectList) { // TODO: annotate
-    o = get_xywh(object);
+    var o = get_xywh(object);
     for (let target of objectList) {
-        t = get_xywh(target);
+        var t = get_xywh(target);
         if ( (Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
             console.log(o)
             return true;
@@ -804,7 +841,7 @@ function updateRecordDisplay() {
 }
 
 function createTrees() { // TODO: find a home
-    var x, y, scale, rotate, delay;
+    var x, z, scale, rotate, delay;
     for (var i = 0; i < numTrees; i++) {
         x = Math.random() * 600 - 300;
         z = Math.random() * 400 - 200;
@@ -828,6 +865,7 @@ function createTrees() { // TODO: find a home
 }
 
 function endTrees() {
+    var scale, delay;
     for (let tree of trees) {
         scale = tree.mesh.scale.x;
         delay = delay = 2000 * Math.random();
@@ -848,7 +886,7 @@ function createFuels() {
 }
 
 function endFuels() {
-    scale = fuel.mesh.scale.x;
+    var scale = fuel.mesh.scale.x;
     startShrink( fuel.mesh, 25, -10, scale );
 }
 
@@ -905,7 +943,7 @@ function animateGrow() {
 }
 
 function animateShrink() {
-    var scale, progress;
+    var scale, progress, x, y, z;
     for (let child of scene.children) {
         if (child.animateShrink_isShrinking) {
             child.animateShrink_time--;
