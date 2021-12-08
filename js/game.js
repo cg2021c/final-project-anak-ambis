@@ -57,8 +57,10 @@ function init() {
 
     // add controls
     createControls();
-    // createLoader();
-    loadObj();
+
+    // add custom objects
+    createLoader();
+    loadTruck();
 
     // reset game
     resetGame();
@@ -68,35 +70,24 @@ function init() {
 	loop();
 }
 
-function loadObj(){
-    var objLoader = new OBJLoader();
-    var mtlLoader = new MTLLoader();
-    var objMesh;
-    var materials;
+function loadTruck(){
+    return new Promise((resolve)=>{
+        var mtlLoader = new MTLLoader();
+        var objMesh;
+    
+        mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function (mtl) {
+            mtl.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(mtl);
+    
+            objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function (object) {
+                objMesh = object;        
+                resolve(objMesh);
 
-    mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function (mtl) {
-        console.log(mtl)
-        materials = mtl
-    })
+            });
+        });
 
-    // objLoader.setMaterials(materials);
-    objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function (object) {
-
-        console.log(object)
-
-        objMesh = object;
-        objMesh.position.x = 50;
-        objMesh.position.y = 45;
-        objMesh.rotation.y = 20
-        objMesh.scale.x = 0.2;
-        objMesh.scale.y = 0.2;
-        objMesh.scale.z = 0.2;
-
-        scene.add(objMesh);            
     });
-
-    var truck = new THREE.Mesh(objMesh, materials)
-    scene.add(truck)
 }
 
 function createLoader() {
@@ -111,7 +102,7 @@ function handle_glb(glb){
 
 //load biasa
 function handle_load(gltf, x, y, z,sc) {
-    console.log(gltf);
+    // console.log(gltf);
     mesh_import = gltf.scene;
     // console.log(mesh.children[0]);
     // mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
@@ -314,58 +305,76 @@ function Car() {
         'backward': false
     }
 
-	this.mesh = new THREE.Object3D();
     this.berth = 100; // berth for new collidables (e.g., if berth is 100, no
-                      // tree will be initialized with 100 units)
+    // tree will be initialized with 100 units)
+	this.mesh = new THREE.Object3D();
 
-    var body = createBox( 80, 30, 50, bodyColor, 0, 0, 0 );
-	var roof = createBox( 60, 30, 45, roofColor, 0, 30, 0);
-	var bumper = createBox( 90, 10, 45, bumperColor, 0, -10, 0 );
-	var headLightLeft = createBox( 5, 5, 5, Colors.white, 40, 5, 15 );
-	var headLightRight = createBox( 5, 5, 5, Colors.white, 40, 5, -15 );
-	var tailLightLeft = createBox( 5, 5, 10, Colors.red, -40, 5, 21)
-	var tailLightRight = createBox( 5, 5, 10, Colors.red, -40, 5, -21)
-	var grate = createBox( 5, 5, 15, grateColor, 40, 5, 0 );
-	var windshield = createBox( 3, 20, 35, Colors.blue, 30, 25, 0, true );
-    var rearshield = createBox( 3, 20, 35, Colors.blue, -30, 25, 0, true );
-    var leftWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, 22, true );
-    var rightWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, -22, true );
-    var leftDoor = createBox( 30, 30, 3, doorColor, 10, 0, 25 );
-    var rightDoor = createBox( 30, 30, 3, doorColor, 10, 0, -25 );
-    var leftHandle = createBox( 10, 3, 3, handleColor, 5, 8, 27 );
-    var rightHandle = createBox( 10, 3, 3, handleColor, 5, 8, -27 );
-    var frontLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, 15 );
-    var frontRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, -15 );
-    var backLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, 15 );
-    var backRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, -15 );
+    var body = createBox( 140, 0, 50, bodyColor, 0, 0, 0 );
+    body.material.transparent = true
+    body.material.opacity = 0;
+	// var roof = createBox( 60, 30, 45, roofColor, 0, 30, 0);
+	// var bumper = createBox( 90, 10, 45, bumperColor, 0, -10, 0 );
+	// var headLightLeft = createBox( 5, 5, 5, Colors.white, 40, 5, 15 );
+	// var headLightRight = createBox( 5, 5, 5, Colors.white, 40, 5, -15 );
+	// var tailLightLeft = createBox( 5, 5, 10, Colors.red, -40, 5, 21)
+	// var tailLightRight = createBox( 5, 5, 10, Colors.red, -40, 5, -21)
+	// var grate = createBox( 5, 5, 15, grateColor, 40, 5, 0 );
+	// var windshield = createBox( 3, 20, 35, Colors.blue, 30, 25, 0, true );
+    // var rearshield = createBox( 3, 20, 35, Colors.blue, -30, 25, 0, true );
+    // var leftWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, 22, true );
+    // var rightWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, -22, true );
+    // var leftDoor = createBox( 30, 30, 3, doorColor, 10, 0, 25 );
+    // var rightDoor = createBox( 30, 30, 3, doorColor, 10, 0, -25 );
+    // var leftHandle = createBox( 10, 3, 3, handleColor, 5, 8, 27 );
+    // var rightHandle = createBox( 10, 3, 3, handleColor, 5, 8, -27 );
+    // var frontLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, 15 );
+    // var frontRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, -15 );
+    // var backLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, 15 );
+    // var backRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, -15 );
 
-	this.mesh.add(body);
-	this.mesh.add(roof);
-	this.mesh.add(bumper);
-	this.mesh.add(headLightLeft);
-	this.mesh.add(headLightRight);
-	this.mesh.add(tailLightLeft);
-	this.mesh.add(tailLightRight);
-    this.mesh.add(grate);
-    this.mesh.add(windshield);
-    this.mesh.add(rearshield);
-    this.mesh.add(leftWindow);
-    this.mesh.add(rightWindow);
-    this.mesh.add(leftDoor);
-    this.mesh.add(rightDoor);
-    this.mesh.add(leftHandle);
-    this.mesh.add(rightHandle);
-    this.mesh.add(frontLeftTire);
-    this.mesh.add(frontRightTire);
-    this.mesh.add(backLeftTire);
-    this.mesh.add(backRightTire);
+	// this.mesh.add(body);
+	// this.mesh.add(roof);
+	// this.mesh.add(bumper);
+	// this.mesh.add(headLightLeft);
+	// this.mesh.add(headLightRight);
+	// this.mesh.add(tailLightLeft);
+	// this.mesh.add(tailLightRight);
+    // this.mesh.add(grate);
+    // this.mesh.add(windshield);
+    // this.mesh.add(rearshield);
+    // this.mesh.add(leftWindow);
+    // this.mesh.add(rightWindow);
+    // this.mesh.add(leftDoor);
+    // this.mesh.add(rightDoor);
+    // this.mesh.add(leftHandle);
+    // this.mesh.add(rightHandle);
+    // this.mesh.add(frontLeftTire);
+    // this.mesh.add(frontRightTire);
+    // this.mesh.add(backLeftTire);
+    // this.mesh.add(backRightTire);
+
+    this.mesh.add(body)
+
+    loadTruck().then((truck)=>{
+        truck.position.x = 0;
+        truck.position.y = 20;
+        truck.position.z = 0;
+
+        truck.rotation.y = 3.14
+        truck.scale.x = 0.2;
+        truck.scale.y = 0.2;
+        truck.scale.z = 0.2;
+
+        this.mesh.add(truck)
+
+    })
 
 	var headLightLeftLight = new THREE.PointLight( 0xffcc00, 1, 100 );
-    headLightLeftLight.position.set( 50, 5, 15 );
+    headLightLeftLight.position.set( 70, 5, 15 );
     this.mesh.add( headLightLeftLight );
 
     var headLightRightLight = new THREE.PointLight( 0xffcc00, 1, 100 );
-    headLightRightLight.position.set( 50, 5, -15 );
+    headLightRightLight.position.set( 70, 5, -15 );
     this.mesh.add( headLightRightLight );
 
     function computeR(radians) {
@@ -440,6 +449,8 @@ function Car() {
         car.mesh.rotation.y = 0;
     }
 }
+
+
 
 /**
  * Create car with hard-coded start location
@@ -691,16 +702,19 @@ function objectInBound(object, objectList) { // TODO: annotate
 }
 
 function get_xywh(object) {  // TODO: annotate
-    var p = object.geometry.parameters;
+       
     var globalPosition = new THREE.Vector3( 0., 0., 0. );
     object.getWorldPosition(globalPosition);
     var x = globalPosition.x;
     var y = globalPosition.z;
+    
+    var p = object.geometry.parameters;
     var w = p.width;
     if (p.hasOwnProperty('radiusBottom')) {
         w = Math.max(p.radiusTop, p.radiusBottom); // should be multiplied by 2?
     }
     var h = p.height;
+
     return {'x': x, 'y': y, 'w': w, 'h': h};
 }
 
