@@ -22,6 +22,38 @@ var Colors = {
     golden:0xff9900
 };
 
+const districtInformatics = {
+    buildings : [
+        {
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x : -100,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+        {
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x : 60,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+        {
+            objPath: '../assets/building/OBJ/1Story_GableRoof_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/1Story_GableRoof_Mat.mtl',
+            x : 220,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+    ]
+};
+
 /**
  *
  * STEP 0
@@ -65,7 +97,7 @@ function init() {
 
 	// add the objects
     createGround();
-    createBuilding();
+    loadDistrict();
     createCar();
     createLevel();
 
@@ -103,36 +135,24 @@ function loadTruck(){
     });
 }
 
-function createBuilding() {
-    loadObjModel('../assets/building/OBJ/6Story_Stack_Mat.obj', 
-    '../assets/building/OBJ/6Story_Stack_Mat.mtl').then((building)=>{
-        building.position.x = -100;
-        building.position.y = 10;
-        building.position.z = -100;
+function loadDistrict() {
+    districtInformatics.buildings.forEach(building => {
+        loadObjModel(building.objPath, building.mtlPath).then((buildingMesh)=>{
+            buildingMesh.position.x = building.x;
+            buildingMesh.position.y = building.y;
+            buildingMesh.position.z = building.z;
 
-        // building.rotation.y = 3.14
-        building.scale.set(75.0, 75.0, 75.0);
-        // building.castShadow = true;
-        // building.receiveShadow = true;
+            buildingMesh.scale.set(building.scale, building.scale, building.scale);
 
-        // scene.add( building );
+            buildingMesh.collidable = createCollidable(building.x, building.z, building.radius);
+        });
     });
 }
 
-// TODO: it's still need tobe tested
-function loadGltfModel(pathGltf, pathMtl) {
-    return new Promise((resolve) => {
-        var mtlLoader = new MTLLoader();
-        var objMesh;
-        var objLoader = GLTFLoader();
-        objLoader.load(pathGltf, function (object) {
-            objMesh = object.scene;
-            objMesh.castShadow = true;
-            objMesh.receiveShadow = true;
-            scene.add( objMesh );
-            resolve(objMesh);
-        });
-    });
+function createCollidable(x, z, radius) {
+    const collidable = createCylinder( radius, radius, 200, 4, Colors.green, x, 10, z);
+    collidableTrees.push( collidable );
+    return collidable;
 }
 
 function loadObjModel(pathObj, pathMtl) {
@@ -152,60 +172,13 @@ function loadObjModel(pathObj, pathMtl) {
                 objMesh.children.forEach(child => {
                     child.castShadow = true;
                     child.receiveShadow = true;
-                    child.geometry.parameters = {
-                        height: 50,
-                        heightSegments: 1,
-                        openEnded: false,
-                        radialSegments: 4,
-                        radiusBottom: 50,
-                        radiusTop: 1,
-                        thetaLength: 6.283185307179586,
-                        thetaStart: 0
-                    };
-                    // collidableTrees.push( child ); // still can be through
-                    // console.log( child );
                 });
-
-                objMesh.collidable = createCylinder( 1, 150, 200, 4, Colors.green, -100, 10, -100 ); // add collidable, position should be relative
-                // objMesh.collidable.rotation.y = 45;
-                objMesh.collidable.testing = true;
-                // scene.add( objMesh.collidable );
-                collidableTrees.push( objMesh.collidable );
-                // console.log( objMesh.collidable );
                 scene.add( objMesh );
                 resolve(objMesh);
             });
         });
     });
 }
-
-function createLoader() {
-    loader = new GLTFLoader ();
-    loader.load('../assets/try.gltf', handle_glb);
-    // loader.load('../assets/truck/scene.gltf', handle_glb);
-}
-
-function handle_glb(glb){
-    handle_load(glb, 0, 25, 50, 100);
-}
-
-//load biasa
-function handle_load(gltf, x, y, z,sc) {
-    // console.log(gltf);
-    mesh_import = gltf.scene;
-    // console.log(mesh.children[0]);
-    // mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
-    // mesh_import.children[1].material = new THREE.MeshPhongMaterial({color: Colors.green});
-    // mesh_import.children[2].material = new THREE.MeshPhongMaterial({color: Colors.blue});
-    mesh_import.scale.set(sc, sc, sc);    
-    mesh_import.position.z = z;
-    mesh_import.position.x = x;
-    mesh_import.position.y = y;
-    mesh_import.castShadow = true;
-    mesh_import.receiveShadow = true;
-    scene.add( mesh_import );
-}
-
 
 function createScene() {
 	// Get the width and the height of the screen,
@@ -771,7 +744,6 @@ function objectInBound(object, objectList) { // TODO: annotate
     for (let target of objectList) {
         var t = get_xywh(target);
         if ( (Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
-            console.log( target.testing );
             return true;
         }
     }
