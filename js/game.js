@@ -3,6 +3,8 @@ import * as THREE from './three.module.js';
 import { GLTFLoader } from "./GLTFLoader.js";
 import { OBJLoader } from './OBJLoader.js';
 import { MTLLoader } from './MTLLoader.js';
+import { Colors } from './Colors.js';
+
 /**
  *
  * KARS
@@ -90,28 +92,25 @@ var mesh_import;
 
 function init() {
 
-	// set up the scene, the camera and the renderer
 	createScene();
-	// add the lights
 	createLights();
 
-	// add the objects
+	// Add the objects
     createGround();
     loadDistrict();
     createCar();
     createLevel();
 
-    // add controls
-    createControls();
-
     // add custom objects
     // createLoader();
+    
+    // Add controls
+    createControls();
 
-    // reset game
+
+    // Reset game
     resetGame();
 
-	// start a loop that will update the objects' positions
-	// and render the scene on each frame
 	loop();
 }
 
@@ -362,50 +361,10 @@ function Car() {
     var body = createBox( 140, 0, 50, bodyColor, 0, 0, 0 );
     body.material.transparent = true
     body.material.opacity = 0;
-	// var roof = createBox( 60, 30, 45, roofColor, 0, 30, 0);
-	// var bumper = createBox( 90, 10, 45, bumperColor, 0, -10, 0 );
-	// var headLightLeft = createBox( 5, 5, 5, Colors.white, 40, 5, 15 );
-	// var headLightRight = createBox( 5, 5, 5, Colors.white, 40, 5, -15 );
-	// var tailLightLeft = createBox( 5, 5, 10, Colors.red, -40, 5, 21)
-	// var tailLightRight = createBox( 5, 5, 10, Colors.red, -40, 5, -21)
-	// var grate = createBox( 5, 5, 15, grateColor, 40, 5, 0 );
-	// var windshield = createBox( 3, 20, 35, Colors.blue, 30, 25, 0, true );
-    // var rearshield = createBox( 3, 20, 35, Colors.blue, -30, 25, 0, true );
-    // var leftWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, 22, true );
-    // var rightWindow = createBox( 40, 20, 3, Colors.blue, 0, 25, -22, true );
-    // var leftDoor = createBox( 30, 30, 3, doorColor, 10, 0, 25 );
-    // var rightDoor = createBox( 30, 30, 3, doorColor, 10, 0, -25 );
-    // var leftHandle = createBox( 10, 3, 3, handleColor, 5, 8, 27 );
-    // var rightHandle = createBox( 10, 3, 3, handleColor, 5, 8, -27 );
-    // var frontLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, 15 );
-    // var frontRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, 20, -12, -15 );
-    // var backLeftTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, 15 );
-    // var backRightTire = createTire( 10, 10, 10, 32, Colors.brownDark, -20, -12, -15 );
-
-	// this.mesh.add(body);
-	// this.mesh.add(roof);
-	// this.mesh.add(bumper);
-	// this.mesh.add(headLightLeft);
-	// this.mesh.add(headLightRight);
-	// this.mesh.add(tailLightLeft);
-	// this.mesh.add(tailLightRight);
-    // this.mesh.add(grate);
-    // this.mesh.add(windshield);
-    // this.mesh.add(rearshield);
-    // this.mesh.add(leftWindow);
-    // this.mesh.add(rightWindow);
-    // this.mesh.add(leftDoor);
-    // this.mesh.add(rightDoor);
-    // this.mesh.add(leftHandle);
-    // this.mesh.add(rightHandle);
-    // this.mesh.add(frontLeftTire);
-    // this.mesh.add(frontRightTire);
-    // this.mesh.add(backLeftTire);
-    // this.mesh.add(backRightTire);
 
     this.mesh.add(body)
 
-    loadTruck().then((truck)=>{
+    loadObjModel('../assets/truckObj/source/Garbage Truck1.obj', '../assets/truckObj/source/Garbage Truck1.mtl').then((truck)=>{
         truck.position.x = 0;
         truck.position.y = 20;
         truck.position.z = 0;
@@ -416,7 +375,6 @@ function Car() {
         truck.scale.z = 0.2;
 
         this.mesh.add(truck)
-
     })
 
 	var headLightLeftLight = new THREE.PointLight( 0xffcc00, 1, 100 );
@@ -499,8 +457,6 @@ function Car() {
         car.mesh.rotation.y = 0;
     }
 }
-
-
 
 /**
  * Create car with hard-coded start location
