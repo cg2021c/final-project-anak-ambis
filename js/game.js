@@ -3,30 +3,14 @@ import * as THREE from './three.module.js';
 import { GLTFLoader } from "./GLTFLoader.js";
 import { OBJLoader } from './OBJLoader.js';
 import { MTLLoader } from './MTLLoader.js';
+import { Colors } from './Colors.js';
+
 /**
  *
  * KARS
  * ----
  * Survival driving game, created by Alvin Wan (alvinwan.com)
- */
-
-var Colors = {
-	red:0xf25346,
-	white:0xd8d0d1,
-	brown:0x59332e,
-	pink:0xF5986E,
-	brownDark:0x23190f,
-	blue:0x68c3c0,
-    green:0x669900,
-    greenDark:0x496d01,
-    golden:0xff9900
-};
-
-/**
- *
- * STEP 0
- * ------
- * Copy car customization.
+ * Modified by Grafkom C 2021 - Anak Ambis
  */
 
 var bodyColor = Colors.brown;
@@ -58,24 +42,23 @@ var mesh_import;
 
 function init() {
 
-	// set up the scene, the camera and the renderer
 	createScene();
-	// add the lights
 	createLights();
 
-	// add the objects
+	// Add the objects
     createGround();
     createBuilding();
     createCar();
     createLevel();
 
-    // add controls
-    createControls();
-
     // add custom objects
     // createLoader();
+    
+    // Add controls
+    createControls();
 
-    // reset game
+
+    // Reset game
     resetGame();
 
 	// start a loop that will update the objects' positions
