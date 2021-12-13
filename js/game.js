@@ -23,7 +23,34 @@ var Colors = {
     greenDark:0x496d01,
     golden:0xff9900
 };
-
+const filename = [
+    '1Story_GableRoof_Mat',
+    '1Story_Mat',
+    '1Story_RoundRoof_Mat',
+    '1Story_Sign_Mat',
+    '2Story_2_Mat',
+    '2Story_Balcony_Mat',
+    '2Story_Center_Mat',
+    '2Story_Columns_Mat',
+    '2Story_Double_Mat',
+    '2Story_GableRoof_Mat',
+    '2Story_Mat',
+    '2Story_RoundRoof_Mat',
+    '2Story_Sidehouse_Mat',
+    '2Story_Sign_Mat',
+    '2Story_Slim_Mat',
+    '2Story_Stairs_Mat',
+    '2Story_Wide_2Doors_Mat',
+    '2Story_Wide_Mat',
+    '3Story_Balcony_Mat',
+    '3Story_Slim_Mat',
+    '3Story_Small_Mat',
+    '4Story_Center_Mat',
+    '4Story_Mat',
+    '4Story_Wide_2Doors_Mat',
+    '4Story_Wide_2Doors_Roof_Mat',
+    '6Story_Stack_Mat'
+];
 const districtInformatics = {
     buildings : [
         {
