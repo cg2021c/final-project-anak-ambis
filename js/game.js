@@ -13,7 +13,6 @@ import { FBXLoader } from './FBXLoader.js'
  * Survival driving game, created by Alvin Wan (alvinwan.com)
  */
 
-
 const filename = [
     '1Story_GableRoof_Mat',
     '1Story_Mat',
@@ -42,6 +41,7 @@ const filename = [
     '4Story_Wide_2Doors_Roof_Mat',
     '6Story_Stack_Mat'
 ];
+
 const districtInformatics = {
     buildings : [
         {
@@ -125,6 +125,21 @@ function init() {
     
     // Add controls
     createControls();
+
+    // CONTOH PENGGUNAAN LOAD OBJ ================================
+    loadObjModel('/assets/building/OBJ/6Story_Stack_Mat.obj', 
+                '/assets/building/OBJ/6Story_Stack_Mat.mtl')
+                .then(model=>{
+        model.position.x = -400
+        model.scale.x = 50
+        model.scale.y = 50
+        model.scale.z = 50
+
+        scene.add(model)
+        console.log("load sukses")
+    })
+
+    // END LOAD OBJ =====================================================
 
 
     // Reset game
@@ -220,7 +235,7 @@ function loadObjModel(pathObj, pathMtl) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 });
-                scene.add( objMesh );
+                // scene.add( objMesh );
                 resolve(objMesh);
             });
         });
