@@ -43,33 +43,41 @@ const filename = [
 ];
 
 const districtInformatics = {
-    buildings : [
-        {
-            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+    buildings: [{
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj',
             mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
-            x : -100,
-            y : 10,
-            z : -100,
-            scale : 75.0,
-            radius : 160
+            x: -100,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
         },
         {
-            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj',
             mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
-            x : 60,
-            y : 10,
-            z : -100,
-            scale : 75.0,
-            radius : 160
+            x: 60,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
         },
         {
-            objPath: '../assets/building/OBJ/1Story_GableRoof_Mat.obj', 
+            objPath: '../assets/building/OBJ/1Story_GableRoof_Mat.obj',
             mtlPath: '../assets/building/OBJ/1Story_GableRoof_Mat.mtl',
-            x : 220,
-            y : 10,
-            z : -100,
-            scale : 75.0,
-            radius : 160
+            x: 220,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
+        },
+        {
+            objPath: '../assets/building/OBJ/SmallTower.obj',
+            mtlPath: '../assets/building/OBJ/SmallTower.mtl',
+            x: -400,
+            y: 10,
+            z: -100,
+            scale: 300.0,
+            radius: 160
         },
     ]
 };
@@ -102,19 +110,19 @@ var mesh_import;
  * Boilerplate for scene, camera, renderer, lights taken from
  * https://tympanus.net/codrops/2016/04/26/the-aviator-animating-basic-3d-scene-threejs/
  */
- var scene,
- camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
- renderer, container;
- const clock = new THREE.Clock()
+var scene,
+    camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
+    renderer, container;
+const clock = new THREE.Clock()
 
 /********** End step 0 **********/
 
 function init() {
 
-	createScene();
-	createLights();
+    createScene();
+    createLights();
 
-	// Add the objects
+    // Add the objects
     createGround();
     loadDistrict();
     createCar();
@@ -122,7 +130,7 @@ function init() {
 
     // add custom objects
     // createLoader();
-    
+
     // Add controls
     createControls();
 
@@ -145,21 +153,21 @@ function init() {
     // Reset game
     resetGame();
 
-	loop();
+    loop();
 }
 
-function loadTruck(){
-    return new Promise((resolve)=>{
+function loadTruck() {
+    return new Promise((resolve) => {
         var mtlLoader = new MTLLoader();
         var objMesh;
-    
-        mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function (mtl) {
+
+        mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function(mtl) {
             mtl.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
-    
-            objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function (object) {
-                objMesh = object;        
+
+            objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function(object) {
+                objMesh = object;
                 resolve(objMesh);
 
             });
@@ -174,7 +182,7 @@ function loadGltfModel(pathGltf, pathMtl) {
         var mtlLoader = new MTLLoader();
         var objMesh;
         var objLoader = GLTFLoader();
-        objLoader.load(pathGltf, function (object) {
+        objLoader.load(pathGltf, function(object) {
             objMesh = object.scene;
             objMesh.castShadow = true;
             objMesh.receiveShadow = true;
@@ -186,10 +194,13 @@ function loadGltfModel(pathGltf, pathMtl) {
 
 function loadDistrict() {
     districtInformatics.buildings.forEach(building => {
-        loadObjModel(building.objPath, building.mtlPath).then((buildingMesh)=>{
+        loadObjModel(building.objPath, building.mtlPath).then((buildingMesh) => {
             buildingMesh.position.x = building.x;
             buildingMesh.position.y = building.y;
             buildingMesh.position.z = building.z;
+
+
+            // buildingMesh.setMaterials(new THREE.MeshPhongMaterial({ color: Colors.green }))
 
             buildingMesh.scale.set(building.scale, building.scale, building.scale);
 
@@ -203,7 +214,7 @@ function loadFbxModel(pathFbx) {
         var fbxLoader = new FBXLoader();
         var objMesh;
 
-        fbxLoader.load(pathFbx, function (model) {
+        fbxLoader.load(pathFbx, function(model) {
             objMesh = model
             resolve(objMesh);
 
@@ -212,8 +223,8 @@ function loadFbxModel(pathFbx) {
 }
 
 function createCollidable(x, z, radius) {
-    const collidable = createCylinder( radius, radius, 200, 4, Colors.green, x, 10, z);
-    collidableTrees.push( collidable );
+    const collidable = createCylinder(radius, radius, 200, 4, Colors.green, x, 10, z);
+    collidableTrees.push(collidable);
     return collidable;
 }
 
@@ -222,20 +233,25 @@ function loadObjModel(pathObj, pathMtl) {
         var mtlLoader = new MTLLoader();
         var objMesh;
 
-        mtlLoader.load(pathMtl, function (mtl) {
+        mtlLoader.load(pathMtl, function(mtl) {
             mtl.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
-    
-            objLoader.load(pathObj, function (object) {
+
+            objLoader.load(pathObj, function(object) {
                 objMesh = object;
                 objMesh.castShadow = true;
                 objMesh.receiveShadow = true;
                 objMesh.children.forEach(child => {
                     child.castShadow = true;
                     child.receiveShadow = true;
+
                 });
+<<<<<<< HEAD
                 // scene.add( objMesh );
+=======
+                scene.add(objMesh);
+>>>>>>> f638b3ffcb9552fbf516e20050d45a3780b5ba71
                 resolve(objMesh);
             });
         });
@@ -243,70 +259,70 @@ function loadObjModel(pathObj, pathMtl) {
 }
 
 function createScene() {
-	// Get the width and the height of the screen,
-	// use them to set up the aspect ratio of the camera
-	// and the size of the renderer.
-	HEIGHT = window.innerHeight;
-	WIDTH = window.innerWidth;
+    // Get the width and the height of the screen,
+    // use them to set up the aspect ratio of the camera
+    // and the size of the renderer.
+    HEIGHT = window.innerHeight;
+    WIDTH = window.innerWidth;
 
-	// Create the scene
-	scene = new THREE.Scene();
+    // Create the scene
+    scene = new THREE.Scene();
 
-	// Add a fog effect to the scene; same color as the
-	// background color used in the style sheet
-	scene.fog = new THREE.Fog(0xbadbe4, 700, 1000);
+    // Add a fog effect to the scene; same color as the
+    // background color used in the style sheet
+    scene.fog = new THREE.Fog(0xbadbe4, 700, 1000);
 
-	// Create the camera
-	aspectRatio = WIDTH / HEIGHT;
-	fieldOfView = 60;
-	nearPlane = 1;
-	farPlane = 10000;
-	camera = new THREE.PerspectiveCamera(
-		fieldOfView,
-		aspectRatio,
-		nearPlane,
-		farPlane
-		);
+    // Create the camera
+    aspectRatio = WIDTH / HEIGHT;
+    fieldOfView = 60;
+    nearPlane = 1;
+    farPlane = 10000;
+    camera = new THREE.PerspectiveCamera(
+        fieldOfView,
+        aspectRatio,
+        nearPlane,
+        farPlane
+    );
 
-	// Set the position of the camera
-	camera.position.set( 0, 400, 400 );
-    camera.lookAt( 0, 0, 0 );
+    // Set the position of the camera
+    camera.position.set(0, 400, 400);
+    camera.lookAt(0, 0, 0);
 
-	// Create the renderer
-	renderer = new THREE.WebGLRenderer({
-		// Allow transparency to show the gradient background
-		// we defined in the CSS
-		alpha: true,
+    // Create the renderer
+    renderer = new THREE.WebGLRenderer({
+        // Allow transparency to show the gradient background
+        // we defined in the CSS
+        alpha: true,
 
-		// Activate the anti-aliasing; this is less performant,
-		// but, as our project is low-poly based, it should be fine :)
-		antialias: true
-	});
+        // Activate the anti-aliasing; this is less performant,
+        // but, as our project is low-poly based, it should be fine :)
+        antialias: true
+    });
 
-	// Define the size of the renderer; in this case,
-	// it will fill the entire screen
-	renderer.setSize(WIDTH, HEIGHT);
+    // Define the size of the renderer; in this case,
+    // it will fill the entire screen
+    renderer.setSize(WIDTH, HEIGHT);
 
-	// Enable shadow rendering
-	renderer.shadowMap.enabled = true;
+    // Enable shadow rendering
+    renderer.shadowMap.enabled = true;
 
-	// Add the DOM element of the renderer to the
-	// container we created in the HTML
-	container = document.getElementById('world');
-	container.appendChild(renderer.domElement);
+    // Add the DOM element of the renderer to the
+    // container we created in the HTML
+    container = document.getElementById('world');
+    container.appendChild(renderer.domElement);
 
-	// Listen to the screen: if the user resizes it
-	// we have to update the camera and the renderer size
-	window.addEventListener('resize', handleWindowResize, false);
+    // Listen to the screen: if the user resizes it
+    // we have to update the camera and the renderer size
+    window.addEventListener('resize', handleWindowResize, false);
 }
 
 function handleWindowResize() {
-	// update height and width of the renderer and the camera
-	HEIGHT = window.innerHeight;
-	WIDTH = window.innerWidth;
-	renderer.setSize(WIDTH, HEIGHT);
-	camera.aspect = WIDTH / HEIGHT;
-	camera.updateProjectionMatrix();
+    // update height and width of the renderer and the camera
+    HEIGHT = window.innerHeight;
+    WIDTH = window.innerWidth;
+    renderer.setSize(WIDTH, HEIGHT);
+    camera.aspect = WIDTH / HEIGHT;
+    camera.updateProjectionMatrix();
 }
 
 
@@ -319,38 +335,38 @@ function handleWindowResize() {
 var hemisphereLight, shadowLight;
 
 function createLights() {
-	// A hemisphere light is a gradient colored light;
-	// the first parameter is the sky color, the second parameter is the ground color,
-	// the third parameter is the intensity of the light
-	hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9)
+    // A hemisphere light is a gradient colored light;
+    // the first parameter is the sky color, the second parameter is the ground color,
+    // the third parameter is the intensity of the light
+    hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9)
 
-	// A directional light shines from a specific direction.
-	// It acts like the sun, that means that all the rays produced are parallel.
-	shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+    // A directional light shines from a specific direction.
+    // It acts like the sun, that means that all the rays produced are parallel.
+    shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 
-	// Set the direction of the light
-	shadowLight.position.set(150, 350, 350);
+    // Set the direction of the light
+    shadowLight.position.set(150, 350, 350);
 
-	// Allow shadow casting
-	shadowLight.castShadow = true;
+    // Allow shadow casting
+    shadowLight.castShadow = true;
 
-	// define the visible area of the projected shadow
-	shadowLight.shadow.camera.left = -800;
-	shadowLight.shadow.camera.right = 800;
-	shadowLight.shadow.camera.top = 800;
-	shadowLight.shadow.camera.bottom = -800;
-	shadowLight.shadow.camera.near = 0;
-	shadowLight.shadow.camera.far = 20000;
+    // define the visible area of the projected shadow
+    shadowLight.shadow.camera.left = -800;
+    shadowLight.shadow.camera.right = 800;
+    shadowLight.shadow.camera.top = 800;
+    shadowLight.shadow.camera.bottom = -800;
+    shadowLight.shadow.camera.near = 0;
+    shadowLight.shadow.camera.far = 20000;
 
-	// define the resolution of the shadow; the higher the better,
-	// but also the more expensive and less performant
-	shadowLight.shadow.mapSize.width = 2048;
-	shadowLight.shadow.mapSize.height = 2048;
+    // define the resolution of the shadow; the higher the better,
+    // but also the more expensive and less performant
+    shadowLight.shadow.mapSize.width = 2048;
+    shadowLight.shadow.mapSize.height = 2048;
 
-	// to activate the lights, just add them to the scene
-	scene.add(hemisphereLight);
-	scene.add(shadowLight);
-    
+    // to activate the lights, just add them to the scene
+    scene.add(hemisphereLight);
+    scene.add(shadowLight);
+
 }
 
 /**
@@ -359,7 +375,9 @@ function createLights() {
  * -------
  * Definitions and constructors for car, fuel, tree, ground
  */
-var car, fuel, ground, trees = [], collidableTrees = [], numTrees = 10,
+var car, fuel, ground, trees = [],
+    collidableTrees = [],
+    numTrees = 10,
     collidableFuels = [];
 var mixer, animationAction;
 
@@ -368,11 +386,11 @@ var mixer, animationAction;
  */
 function createBox(dx, dy, dz, color, x, y, z, notFlatShading) {
     var geom = new THREE.BoxGeometry(dx, dy, dz);
-    var mat = new THREE.MeshPhongMaterial({color:color, flatShading: notFlatShading != true});
+    var mat = new THREE.MeshPhongMaterial({ color: color, flatShading: notFlatShading != true });
     var box = new THREE.Mesh(geom, mat);
     box.castShadow = true;
     box.receiveShadow = true;
-    box.position.set( x, y, z );
+    box.position.set(x, y, z);
     return box;
 }
 
@@ -380,13 +398,13 @@ function createBox(dx, dy, dz, color, x, y, z, notFlatShading) {
  * Generic cylinder that casts and receives shadows
  */
 function createCylinder(radiusTop, radiusBottom, height, radialSegments, color,
-                        x, y, z) {
+    x, y, z) {
     var geom = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-    var mat = new THREE.MeshPhongMaterial({color:color, flatShading: true});
+    var mat = new THREE.MeshPhongMaterial({ color: color, flatShading: true });
     var cylinder = new THREE.Mesh(geom, mat);
     cylinder.castShadow = true;
     cylinder.receiveShadow = true;
-    cylinder.position.set( x, y, z );
+    cylinder.position.set(x, y, z);
     return cylinder;
 }
 
@@ -395,7 +413,7 @@ function createCylinder(radiusTop, radiusBottom, height, radialSegments, color,
  */
 function createTire(radiusTop, radiusBottom, height, radialSegments, color, x, y, z) {
     var cylinder = createCylinder(radiusTop, radiusBottom, height, radialSegments, color, x, y, z);
-    cylinder.rotation.x = Math.PI / 2;  // hardcoded for tires in the car below
+    cylinder.rotation.x = Math.PI / 2; // hardcoded for tires in the car below
     return cylinder;
 }
 
@@ -420,15 +438,15 @@ function Car() {
 
     this.berth = 100; // berth for new collidables (e.g., if berth is 100, no
     // tree will be initialized with 100 units)
-	this.mesh = new THREE.Object3D();
+    this.mesh = new THREE.Object3D();
 
-    var body = createBox( 140, 0, 50, bodyColor, 0, 0, 0 );
+    var body = createBox(140, 0, 50, bodyColor, 0, 0, 0);
     body.material.transparent = true
     body.material.opacity = 0;
 
     this.mesh.add(body)
 
-    loadObjModel('../assets/truckObj/source/Garbage Truck1.obj', '../assets/truckObj/source/Garbage Truck1.mtl').then((truck)=>{
+    loadObjModel('../assets/truckObj/source/Garbage Truck1.obj', '../assets/truckObj/source/Garbage Truck1.mtl').then((truck) => {
         truck.position.x = 0;
         truck.position.y = 20;
         truck.position.z = 0;
@@ -441,19 +459,19 @@ function Car() {
         this.mesh.add(truck)
     })
 
-	var headLightLeftLight = new THREE.PointLight( 0xffcc00, 1, 100 );
-    headLightLeftLight.position.set( 70, 5, 15 );
-    this.mesh.add( headLightLeftLight );
+    var headLightLeftLight = new THREE.PointLight(0xffcc00, 1, 100);
+    headLightLeftLight.position.set(70, 5, 15);
+    this.mesh.add(headLightLeftLight);
 
-    var headLightRightLight = new THREE.PointLight( 0xffcc00, 1, 100 );
-    headLightRightLight.position.set( 70, 5, -15 );
-    this.mesh.add( headLightRightLight );
+    var headLightRightLight = new THREE.PointLight(0xffcc00, 1, 100);
+    headLightRightLight.position.set(70, 5, -15);
+    this.mesh.add(headLightRightLight);
 
     function computeR(radians) {
         var M = new THREE.Matrix3();
         M.set(Math.cos(radians), 0, -Math.sin(radians),
-              0,                 1,                  0,
-              Math.sin(radians), 0,  Math.cos(radians));
+            0, 1, 0,
+            Math.sin(radians), 0, Math.cos(radians));
         return M;
     }
 
@@ -513,7 +531,7 @@ function Car() {
     this.collidable = body;
 
     this.reset = function() {
-        car.mesh.position.set( -300, 25, -150);
+        car.mesh.position.set(-300, 25, -150);
         direction = new THREE.Vector3(1., 0., 0.);
         currentSpeed = 0;
         movement['forward'] = movement['backward'] = false
@@ -534,7 +552,7 @@ function createCar() {
  * Create simple green, rectangular ground
  */
 function createGround() {
-    ground = createBox( 3000, 20, 3000, Colors.greenDark, 0, 0, 0 );
+    ground = createBox(3000, 20, 3000, Colors.greenDark, 0, 0, 0);
     scene.add(ground);
 }
 
@@ -545,15 +563,15 @@ function createGround() {
 function Tree() {
 
     this.mesh = new THREE.Object3D();
-    var top = createCylinder( 1, 30, 30, 4, Colors.green, 0, 90, 0 );
-    var mid = createCylinder( 1, 40, 40, 4, Colors.green, 0, 70, 0 );
-    var bottom = createCylinder( 1, 50, 50, 4, Colors.green, 0, 40, 0 );
-    var trunk = createCylinder( 10, 10, 30, 32, Colors.brownDark, 0, 0, 0 );
+    var top = createCylinder(1, 30, 30, 4, Colors.green, 0, 90, 0);
+    var mid = createCylinder(1, 40, 40, 4, Colors.green, 0, 70, 0);
+    var bottom = createCylinder(1, 50, 50, 4, Colors.green, 0, 40, 0);
+    var trunk = createCylinder(10, 10, 30, 32, Colors.brownDark, 0, 0, 0);
 
-    this.mesh.add( top );
-    this.mesh.add( mid );
-    this.mesh.add( bottom );
-    this.mesh.add( trunk );
+    this.mesh.add(top);
+    this.mesh.add(mid);
+    this.mesh.add(bottom);
+    this.mesh.add(trunk);
 
     this.collidable = bottom;
 }
@@ -565,8 +583,8 @@ function createTree(x, z, scale, rotation) {
     var tree = new Tree();
     trees.push(tree);
     scene.add(tree.mesh);
-    tree.mesh.position.set( x, 0, z );
-    tree.mesh.scale.set( scale, scale, scale );
+    tree.mesh.position.set(x, 0, z);
+    tree.mesh.scale.set(scale, scale, scale);
     tree.mesh.rotation.y = rotation;
     return tree;
 }
@@ -582,20 +600,20 @@ function Fuel() {
     this.animationArr = []
     this.currAnim = 0
 
-    var slab = createBox( 50, 5, 50, Colors.brown, 0, 0, 0 );
+    var slab = createBox(50, 5, 50, Colors.brown, 0, 0, 0);
 
-    var light = new THREE.PointLight( 0xffcc00, 1, 100 );
-    light.position.set( 0, 60, 0 );
+    var light = new THREE.PointLight(0xffcc00, 1, 100);
+    light.position.set(0, 60, 0);
 
-    this.mesh.add( slab );
+    this.mesh.add(slab);
 
-    loadFbxModel('../assets/monsterfbx/Dragon.fbx').then(monster=>{
+    loadFbxModel('../assets/monsterfbx/Dragon.fbx').then(monster => {
         console.log(monster)
         monster.animations.forEach(anim => {
             this.animationArr.push(anim)
         });
 
-        mixer = new THREE.AnimationMixer( monster );
+        mixer = new THREE.AnimationMixer(monster);
 
         monster.scale.x = 0.4;
         monster.scale.y = 0.4;
@@ -606,38 +624,38 @@ function Fuel() {
 
         this.modelReady = true;
         this.switchAnim(this.currAnim);
-                
+
     })
 
     this.collidable = this.mesh.children[0];
 
-    this.switchAnim = function(num){
-        if(this.animationArr[num]){
-            if(this.currAnim != num){
+    this.switchAnim = function(num) {
+        if (this.animationArr[num]) {
+            if (this.currAnim != num) {
                 animationAction.stop();
 
-                animationAction = mixer.clipAction( this.animationArr[num] );
+                animationAction = mixer.clipAction(this.animationArr[num]);
                 this.currAnim = num
                 animationAction.play();
-        
+
                 this.animReady = true;
 
-            }else{
-                animationAction = mixer.clipAction( this.animationArr[num] );
+            } else {
+                animationAction = mixer.clipAction(this.animationArr[num]);
                 animationAction.play();
-        
+
                 this.animReady = true;
             }
-        }else{
+        } else {
             console.log("this anim not available")
         }
-        
+
     }
 }
 
 function createFuel(x, z) {
     fuel = new Fuel();
-    fuel.mesh.position.set( x, 0, z );
+    fuel.mesh.position.set(x, 0, z);
     scene.add(fuel.mesh);
 
     collidableFuels.push(fuel.collidable);
@@ -646,15 +664,15 @@ function createFuel(x, z) {
 
 function updateCamPos() {
     var newPos = new THREE.Vector3(camStartingPos.x, camStartingPos.y, camStartingPos.z);
-    newPos.add( car.mesh.position );
-    camera.position.copy( newPos );
+    newPos.add(car.mesh.position);
+    camera.position.copy(newPos);
 }
 
-function updateRenderShadowPos(){
+function updateRenderShadowPos() {
     var newPos = new THREE.Vector3(shadowStartingPos.x, shadowStartingPos.y, shadowStartingPos.z);
-    newPos.add( car.mesh.position );
+    newPos.add(car.mesh.position);
     shadowLight.position.copy(newPos);
-    shadowLight.target.position.copy( car.mesh.position );
+    shadowLight.target.position.copy(car.mesh.position);
     shadowLight.updateMatrixWorld();
     shadowLight.target.updateMatrixWorld();
 }
@@ -668,9 +686,9 @@ function updateRenderShadowPos(){
 
 function loop() {
 
-    if(fuel.modelReady){
+    if (fuel.modelReady) {
         mixer.update(clock.getDelta())
-    }else{
+    } else {
         console.log("MODEL Not Ready")
     }
     // method 1
@@ -681,36 +699,36 @@ function loop() {
     animateGrow();
     animateShrink();
 
-	// render the scene
-	renderer.render(scene, camera);
+    // render the scene
+    renderer.render(scene, camera);
     updateCamPos();
     updateRenderShadowPos();
-    
+
     // console.log( car.mesh.position );
     // camera.position.copy( car.mesh.position )
-	// scene.rotation.y += 0.0025
+    // scene.rotation.y += 0.0025
     // scene.transl
 
-	// check global collisions
+    // check global collisions
     checkCollisions();
 
-	// call the loop function again
-	requestAnimationFrame(loop);
+    // call the loop function again
+    requestAnimationFrame(loop);
 
     // // method 2
     // requestAnimationFrame((t) => {
     //     if (_previousRAF === null) {
     //       _previousRAF = t;
     //     }
-  
+
     //     loop();
     //     // handle car movement and collisions
     //     car.update();
-    
+
     //     // handle all growth animations
     //     animateGrow();
     //     animateShrink();
-  
+
     //     renderer.render(scene, camera);
     //     updateCamPos();
     //     // check global collisions
@@ -727,7 +745,7 @@ var down = 40;
 function createControls() {
     document.addEventListener(
         'keydown',
-        function( ev ) {
+        function(ev) {
             var key = ev.keyCode;
 
             if (key == left) {
@@ -747,7 +765,7 @@ function createControls() {
 
     document.addEventListener(
         'keyup',
-        function( ev ) {
+        function(ev) {
             var key = ev.keyCode;
 
             if (key == left) {
@@ -767,17 +785,17 @@ function createControls() {
 }
 
 // https://stackoverflow.com/a/11480717/4855984 (doesn't work)
-function objectCollidedWith(object, collidableMeshList) {  // TODO: place elsewhere, dysfunctional
+function objectCollidedWith(object, collidableMeshList) { // TODO: place elsewhere, dysfunctional
     for (let child of object.children) {
         var childPosition = child.position.clone();
         for (var vertexIndex = 0; vertexIndex < child.geometry.vertices.length; vertexIndex++) {
             var localVertex = child.geometry.vertices[vertexIndex].clone();
             var globalVertex = localVertex.applyMatrix4(child.matrix);
-            var directionVector = child.position.sub( globalVertex );
+            var directionVector = child.position.sub(globalVertex);
 
-            var ray = new THREE.Raycaster( childPosition, directionVector.clone().normalize() );
-            var collisionResults = ray.intersectObjects( collidableMeshList );
-            if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
+            var ray = new THREE.Raycaster(childPosition, directionVector.clone().normalize());
+            var collisionResults = ray.intersectObjects(collidableMeshList);
+            if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                 return true;
             }
         }
@@ -797,20 +815,20 @@ function objectInBound(object, objectList) { // TODO: annotate
     var o = get_xywh(object);
     for (let target of objectList) {
         var t = get_xywh(target);
-        if ( (Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
+        if ((Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
             return true;
         }
     }
     return false;
 }
 
-function get_xywh(object) {  // TODO: annotate
-       
-    var globalPosition = new THREE.Vector3( 0., 0., 0. );
+function get_xywh(object) { // TODO: annotate
+
+    var globalPosition = new THREE.Vector3(0., 0., 0.);
     object.getWorldPosition(globalPosition);
     var x = globalPosition.x;
     var y = globalPosition.z;
-    
+
     var p = object.geometry.parameters;
     var w = p.width;
     // console.log( p );
@@ -819,7 +837,7 @@ function get_xywh(object) {  // TODO: annotate
     }
     var h = p.height;
 
-    return {'x': x, 'y': y, 'w': w, 'h': h};
+    return { 'x': x, 'y': y, 'w': w, 'h': h };
 }
 
 /**
@@ -848,9 +866,9 @@ function endLevel() {
         stopTimer();
 
         setTimeout(createLevel, 2000);
-        
+
     }, 1000);
-    
+
 }
 
 function resetGame() {
@@ -973,9 +991,9 @@ function createTrees() { // TODO: find a home
         rotate = Math.random() * Math.PI * 2;
         delay = 2000 * Math.random()
 
-        var treePosition = new THREE.Vector3( x, 0, z );
+        var treePosition = new THREE.Vector3(x, 0, z);
         if (treePosition.distanceTo(car.mesh.position) < car.berth ||
-                treePosition.distanceTo(fuel.mesh.position) < fuel.berth) {
+            treePosition.distanceTo(fuel.mesh.position) < fuel.berth) {
             continue;
         }
         var tree = createTree(x, z, 0.01, rotate);
@@ -1011,7 +1029,7 @@ function createFuels() {
 
 function endFuels() {
     var scale = fuel.mesh.scale.x;
-    startShrink( fuel.mesh, 25, -10, scale );
+    startShrink(fuel.mesh, 25, -10, scale);
 }
 
 /**
@@ -1054,10 +1072,10 @@ function animateGrow() {
             x = child.position.x;
             z = child.position.z;
             y = child.animateGrow_start_y + (progress * child.animateGrow_end_dy);
-            child.position.set( x, y, z );
+            child.position.set(x, y, z);
 
             scale = child.animateGrow_end_scale * progress;
-            child.scale.set( scale, scale, scale );
+            child.scale.set(scale, scale, scale);
 
             if (child.animateGrow_time >= child.animateGrow_end_time) {
                 child.animateGrow_isGrowing = false;
@@ -1077,10 +1095,10 @@ function animateShrink() {
             x = child.position.x;
             z = child.position.z;
             y = child.animateShrink_start_y + (progress * child.animateShrink_end_dy);
-            child.position.set( x, y, z );
+            child.position.set(x, y, z);
 
             scale = progress * child.animateShrink_start_scale;
-            child.scale.set( scale, scale, scale );
+            child.scale.set(scale, scale, scale);
 
             if (child.animateShrink_time <= 0) {
                 scene.remove(child);
