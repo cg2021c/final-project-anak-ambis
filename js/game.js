@@ -11,7 +11,74 @@ import { FBXLoader } from './FBXLoader.js'
  * KARS
  * ----
  * Survival driving game, created by Alvin Wan (alvinwan.com)
- * Modified by Grafkom C 2021 - Anak Ambis
+ */
+
+
+const filename = [
+    '1Story_GableRoof_Mat',
+    '1Story_Mat',
+    '1Story_RoundRoof_Mat',
+    '1Story_Sign_Mat',
+    '2Story_2_Mat',
+    '2Story_Balcony_Mat',
+    '2Story_Center_Mat',
+    '2Story_Columns_Mat',
+    '2Story_Double_Mat',
+    '2Story_GableRoof_Mat',
+    '2Story_Mat',
+    '2Story_RoundRoof_Mat',
+    '2Story_Sidehouse_Mat',
+    '2Story_Sign_Mat',
+    '2Story_Slim_Mat',
+    '2Story_Stairs_Mat',
+    '2Story_Wide_2Doors_Mat',
+    '2Story_Wide_Mat',
+    '3Story_Balcony_Mat',
+    '3Story_Slim_Mat',
+    '3Story_Small_Mat',
+    '4Story_Center_Mat',
+    '4Story_Mat',
+    '4Story_Wide_2Doors_Mat',
+    '4Story_Wide_2Doors_Roof_Mat',
+    '6Story_Stack_Mat'
+];
+const districtInformatics = {
+    buildings : [
+        {
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x : -100,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+        {
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x : 60,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+        {
+            objPath: '../assets/building/OBJ/1Story_GableRoof_Mat.obj', 
+            mtlPath: '../assets/building/OBJ/1Story_GableRoof_Mat.mtl',
+            x : 220,
+            y : 10,
+            z : -100,
+            scale : 75.0,
+            radius : 160
+        },
+    ]
+};
+
+/**
+ *
+ * STEP 0
+ * ------
+ * Copy car customization.
  */
 
 var bodyColor = Colors.brown;
@@ -49,7 +116,7 @@ function init() {
 
 	// Add the objects
     createGround();
-    createBuilding();
+    loadDistrict();
     createCar();
     createLevel();
 
@@ -66,19 +133,23 @@ function init() {
 	loop();
 }
 
-function createBuilding() {
-    loadObjModel('../assets/building/OBJ/6Story_Stack_Mat.obj', 
-    '../assets/building/OBJ/6Story_Stack_Mat.mtl').then((building)=>{
-        building.position.x = -100;
-        building.position.y = 10;
-        building.position.z = -100;
+function loadTruck(){
+    return new Promise((resolve)=>{
+        var mtlLoader = new MTLLoader();
+        var objMesh;
+    
+        mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function (mtl) {
+            mtl.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(mtl);
+    
+            objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function (object) {
+                objMesh = object;        
+                resolve(objMesh);
 
-        // building.rotation.y = 3.14
-        building.scale.set(75.0, 75.0, 75.0);
-        // building.castShadow = true;
-        // building.receiveShadow = true;
+            });
+        });
 
-        // scene.add( building );
     });
 }
 
@@ -98,25 +169,37 @@ function loadGltfModel(pathGltf, pathMtl) {
     });
 }
 
+function loadDistrict() {
+    districtInformatics.buildings.forEach(building => {
+        loadObjModel(building.objPath, building.mtlPath).then((buildingMesh)=>{
+            buildingMesh.position.x = building.x;
+            buildingMesh.position.y = building.y;
+            buildingMesh.position.z = building.z;
+
+            buildingMesh.scale.set(building.scale, building.scale, building.scale);
+
+            buildingMesh.collidable = createCollidable(building.x, building.z, building.radius);
+        });
+    });
+}
+
 function loadFbxModel(pathFbx) {
     return new Promise((resolve) => {
         var fbxLoader = new FBXLoader();
         var objMesh;
 
         fbxLoader.load(pathFbx, function (model) {
-            
-                // objMesh.collidable = createCylinder( 1, 150, 200, 4, Colors.green, -100, 10, -100 ); // add collidable, position should be relative
-                // objMesh.collidable.rotation.y = 45;
-                // objMesh.collidable.testing = true;
-                // scene.add( objMesh.collidable );
-                // collidableTrees.push( objMesh.collidable );
-                // console.log( objMesh.collidable );
-
-                objMesh = model
-                resolve(objMesh);
+            objMesh = model
+            resolve(objMesh);
 
         });
     });
+}
+
+function createCollidable(x, z, radius) {
+    const collidable = createCylinder( radius, radius, 200, 4, Colors.green, x, 10, z);
+    collidableTrees.push( collidable );
+    return collidable;
 }
 
 function loadObjModel(pathObj, pathMtl) {
@@ -136,60 +219,13 @@ function loadObjModel(pathObj, pathMtl) {
                 objMesh.children.forEach(child => {
                     child.castShadow = true;
                     child.receiveShadow = true;
-                    child.geometry.parameters = {
-                        height: 50,
-                        heightSegments: 1,
-                        openEnded: false,
-                        radialSegments: 4,
-                        radiusBottom: 50,
-                        radiusTop: 1,
-                        thetaLength: 6.283185307179586,
-                        thetaStart: 0
-                    };
-                    // collidableTrees.push( child ); // still can be through
-                    // console.log( child );
                 });
-
-                objMesh.collidable = createCylinder( 1, 150, 200, 4, Colors.green, -100, 10, -100 ); // add collidable, position should be relative
-                // objMesh.collidable.rotation.y = 45;
-                objMesh.collidable.testing = true;
-                // scene.add( objMesh.collidable );
-                collidableTrees.push( objMesh.collidable );
-                // console.log( objMesh.collidable );
                 scene.add( objMesh );
                 resolve(objMesh);
             });
         });
     });
 }
-
-function createLoader() {
-    loader = new GLTFLoader ();
-    loader.load('../assets/try.gltf', handle_glb);
-    // loader.load('../assets/truck/scene.gltf', handle_glb);
-}
-
-function handle_glb(glb){
-    handle_load(glb, 0, 25, 50, 100);
-}
-
-//load biasa
-function handle_load(gltf, x, y, z,sc) {
-    // console.log(gltf);
-    mesh_import = gltf.scene;
-    // console.log(mesh.children[0]);
-    // mesh_import.children[0].material = new THREE.MeshPhongMaterial({color: Colors.brown});
-    // mesh_import.children[1].material = new THREE.MeshPhongMaterial({color: Colors.green});
-    // mesh_import.children[2].material = new THREE.MeshPhongMaterial({color: Colors.blue});
-    mesh_import.scale.set(sc, sc, sc);    
-    mesh_import.position.z = z;
-    mesh_import.position.x = x;
-    mesh_import.position.y = y;
-    mesh_import.castShadow = true;
-    mesh_import.receiveShadow = true;
-    scene.add( mesh_import );
-}
-
 
 function createScene() {
 	// Get the width and the height of the screen,
@@ -747,7 +783,6 @@ function objectInBound(object, objectList) { // TODO: annotate
     for (let target of objectList) {
         var t = get_xywh(target);
         if ( (Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
-            console.log( target.testing );
             return true;
         }
     }
