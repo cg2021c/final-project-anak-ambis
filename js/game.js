@@ -4,6 +4,7 @@ import { GLTFLoader } from "./GLTFLoader.js";
 import { OBJLoader } from './OBJLoader.js';
 import { MTLLoader } from './MTLLoader.js';
 import { Colors } from './Colors.js';
+import { FBXLoader } from './FBXLoader.js'
 
 /**
  *
@@ -37,6 +38,7 @@ var mesh_import;
  var scene,
  camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
  renderer, container;
+ const clock = new THREE.Clock()
 
 /********** End step 0 **********/
 
@@ -90,8 +92,29 @@ function loadGltfModel(pathGltf, pathMtl) {
             objMesh = object.scene;
             objMesh.castShadow = true;
             objMesh.receiveShadow = true;
-            scene.add( objMesh );
+
             resolve(objMesh);
+        });
+    });
+}
+
+function loadFbxModel(pathFbx) {
+    return new Promise((resolve) => {
+        var fbxLoader = new FBXLoader();
+        var objMesh;
+
+        fbxLoader.load(pathFbx, function (model) {
+            
+                // objMesh.collidable = createCylinder( 1, 150, 200, 4, Colors.green, -100, 10, -100 ); // add collidable, position should be relative
+                // objMesh.collidable.rotation.y = 45;
+                // objMesh.collidable.testing = true;
+                // scene.add( objMesh.collidable );
+                // collidableTrees.push( objMesh.collidable );
+                // console.log( objMesh.collidable );
+
+                objMesh = model
+                resolve(objMesh);
+
         });
     });
 }
@@ -287,6 +310,7 @@ function createLights() {
  */
 var car, fuel, ground, trees = [], collidableTrees = [], numTrees = 10,
     collidableFuels = [];
+var mixer, animationAction;
 
 /**
  * Generic box that casts and receives shadows
@@ -502,34 +526,62 @@ function createTree(x, z, scale, rotation) {
 function Fuel() {
     this.mesh = new THREE.Object3D();
     this.berth = 100;
+    this.modelReady = false
+    this.animReady = false
+    this.animationArr = []
+    this.currAnim = 0
 
     var slab = createBox( 50, 5, 50, Colors.brown, 0, 0, 0 );
-    var body = createBox( 20, 100, 15, Colors.red, 0, 0, 0 );
-    var leftArm = createBox( 3, 80, 10, Colors.red, 12.5, 0, 0 );
-    var rightArm = createBox( 3, 80, 10, Colors.red, -12.5, 0, 0 );
-    var frontWindow = createBox( 10, 10, 2, Colors.blue, 0, 35, 10 );
-    var backWindow = createBox( 10, 10, 2, Colors.blue, 0, 35, -10 );
-    var frontBox = createBox( 8, 8, 3, Colors.red, 0, 15, 10 );
-    var backBox = createBox( 8, 8, 3, Colors.red, 0, 15, -10 );
-    var head = createTire( 10, 10, 5, 32, Colors.red, 0, 60, 0 );
-    var headHighlight = createTire( 6, 6, 8, 32, Colors.golden, 0, 60, 0 );
 
     var light = new THREE.PointLight( 0xffcc00, 1, 100 );
     light.position.set( 0, 60, 0 );
 
     this.mesh.add( slab );
-    this.mesh.add( body );
-    this.mesh.add( leftArm );
-    this.mesh.add( rightArm );
-    this.mesh.add( frontWindow );
-    this.mesh.add( backWindow );
-    this.mesh.add( frontBox );
-    this.mesh.add( backBox );
-    this.mesh.add( head );
-    this.mesh.add( headHighlight );
-    this.mesh.add( light );
 
-    this.collidable = slab;
+    loadFbxModel('../assets/monsterfbx/Dragon.fbx').then(monster=>{
+        console.log(monster)
+        monster.animations.forEach(anim => {
+            this.animationArr.push(anim)
+        });
+
+        mixer = new THREE.AnimationMixer( monster );
+
+        monster.scale.x = 0.4;
+        monster.scale.y = 0.4;
+        monster.scale.z = 0.4;
+        monster.position.x = -50
+
+        this.mesh.add(monster)
+
+        this.modelReady = true;
+        this.switchAnim(this.currAnim);
+                
+    })
+
+    this.collidable = this.mesh.children[0];
+
+    this.switchAnim = function(num){
+        if(this.animationArr[num]){
+            if(this.currAnim != num){
+                animationAction.stop();
+
+                animationAction = mixer.clipAction( this.animationArr[num] );
+                this.currAnim = num
+                animationAction.play();
+        
+                this.animReady = true;
+
+            }else{
+                animationAction = mixer.clipAction( this.animationArr[num] );
+                animationAction.play();
+        
+                this.animReady = true;
+            }
+        }else{
+            console.log("this anim not available")
+        }
+        
+    }
 }
 
 function createFuel(x, z) {
@@ -564,6 +616,12 @@ function updateRenderShadowPos(){
  */
 
 function loop() {
+
+    if(fuel.modelReady){
+        mixer.update(clock.getDelta())
+    }else{
+        console.log("MODEL Not Ready")
+    }
     // method 1
     // handle car movement and collisions
     car.update();
@@ -730,13 +788,19 @@ function createLevel() {
 }
 
 function endLevel() {
-    endFuels();
-    endTrees();
+    fuel.switchAnim(2);
 
-    updateStatus();
-    stopTimer();
+    setTimeout(() => {
+        endFuels();
+        endTrees();
 
-    setTimeout(createLevel, 2000);
+        updateStatus();
+        stopTimer();
+
+        setTimeout(createLevel, 2000);
+        
+    }, 1000);
+    
 }
 
 function resetGame() {
