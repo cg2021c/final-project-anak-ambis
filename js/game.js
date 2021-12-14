@@ -247,11 +247,7 @@ function loadObjModel(pathObj, pathMtl) {
                     child.receiveShadow = true;
 
                 });
-<<<<<<< HEAD
                 // scene.add( objMesh );
-=======
-                scene.add(objMesh);
->>>>>>> f638b3ffcb9552fbf516e20050d45a3780b5ba71
                 resolve(objMesh);
             });
         });
