@@ -79,6 +79,15 @@ const districtInformatics = {
             scale: 300.0,
             radius: 160
         },
+        {
+            objPath: '../assets/building/OBJ/SmallTower.obj',
+            mtlPath: '../assets/building/OBJ/SmallTower.mtl',
+            x: -800,
+            y: 10,
+            z: -100,
+            scale: 300.0,
+            radius: 160
+        },
     ]
 };
 
@@ -135,17 +144,17 @@ function init() {
     createControls();
 
     // CONTOH PENGGUNAAN LOAD OBJ ================================
-    loadObjModel('/assets/building/OBJ/6Story_Stack_Mat.obj', 
-                '/assets/building/OBJ/6Story_Stack_Mat.mtl')
-                .then(model=>{
-        model.position.x = -400
-        model.scale.x = 50
-        model.scale.y = 50
-        model.scale.z = 50
+    loadObjModel('/assets/building/OBJ/6Story_Stack_Mat.obj',
+            '/assets/building/OBJ/6Story_Stack_Mat.mtl')
+        .then(model => {
+            model.position.x = -400
+            model.scale.x = 50
+            model.scale.y = 50
+            model.scale.z = 50
 
-        scene.add(model)
-        console.log("load sukses")
-    })
+            scene.add(model)
+            console.log("load sukses")
+        })
 
     // END LOAD OBJ =====================================================
 
@@ -247,11 +256,7 @@ function loadObjModel(pathObj, pathMtl) {
                     child.receiveShadow = true;
 
                 });
-<<<<<<< HEAD
                 // scene.add( objMesh );
-=======
-                scene.add(objMesh);
->>>>>>> f638b3ffcb9552fbf516e20050d45a3780b5ba71
                 resolve(objMesh);
             });
         });
