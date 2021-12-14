@@ -69,7 +69,20 @@ function init() {
         scene.add(model)
         console.log("Building Loaded")
     })
-    // END LOAD OBJ =====================================================
+
+    loadObjModel('/assets/building/OBJ/SmallTower.obj',
+        '/assets/building/OBJ/SmallTower.mtl')
+        .then(model => {
+            model.position.x = -800
+            model.position.z = -100
+            model.scale.x = 50
+            model.scale.y = 50
+            model.scale.z = 50
+
+            scene.add(model)
+    })
+
+    // END LOADER =====================================================
 
     // Reset game
     resetGame();
