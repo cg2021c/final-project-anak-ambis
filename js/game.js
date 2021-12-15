@@ -746,7 +746,7 @@ function updateCamPos(timeElapsed) {
 }
 
 function _CalculateIdealOffset() {
-    const idealOffset = new THREE.Vector3(0, 400, 400);
+    const idealOffset = new THREE.Vector3(-400, 200, 0);
     idealOffset.applyQuaternion( car.mesh.quaternion );
     idealOffset.add( car.mesh.position );
     return idealOffset;
