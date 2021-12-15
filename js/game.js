@@ -11,7 +11,91 @@ import { FBXLoader } from './FBXLoader.js'
  * KARS
  * ----
  * Survival driving game, created by Alvin Wan (alvinwan.com)
- * modified by Grafkom 2021 T.Informatika ITS
+ */
+
+const filename = [
+    '1Story_GableRoof_Mat',
+    '1Story_Mat',
+    '1Story_RoundRoof_Mat',
+    '1Story_Sign_Mat',
+    '2Story_2_Mat',
+    '2Story_Balcony_Mat',
+    '2Story_Center_Mat',
+    '2Story_Columns_Mat',
+    '2Story_Double_Mat',
+    '2Story_GableRoof_Mat',
+    '2Story_Mat',
+    '2Story_RoundRoof_Mat',
+    '2Story_Sidehouse_Mat',
+    '2Story_Sign_Mat',
+    '2Story_Slim_Mat',
+    '2Story_Stairs_Mat',
+    '2Story_Wide_2Doors_Mat',
+    '2Story_Wide_Mat',
+    '3Story_Balcony_Mat',
+    '3Story_Slim_Mat',
+    '3Story_Small_Mat',
+    '4Story_Center_Mat',
+    '4Story_Mat',
+    '4Story_Wide_2Doors_Mat',
+    '4Story_Wide_2Doors_Roof_Mat',
+    '6Story_Stack_Mat'
+];
+
+const districtInformatics = {
+    buildings: [{
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj',
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x: -100,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
+        },
+        {
+            objPath: '../assets/building/OBJ/6Story_Stack_Mat.obj',
+            mtlPath: '../assets/building/OBJ/6Story_Stack_Mat.mtl',
+            x: 60,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
+        },
+        {
+            objPath: '../assets/building/OBJ/1Story_GableRoof_Mat.obj',
+            mtlPath: '../assets/building/OBJ/1Story_GableRoof_Mat.mtl',
+            x: 220,
+            y: 10,
+            z: -100,
+            scale: 75.0,
+            radius: 160
+        },
+        {
+            objPath: '../assets/building/OBJ/SmallTower.obj',
+            mtlPath: '../assets/building/OBJ/SmallTower.mtl',
+            x: -400,
+            y: 10,
+            z: -100,
+            scale: 300.0,
+            radius: 160
+        },
+        {
+            objPath: '../assets/building/OBJ/SmallTower.obj',
+            mtlPath: '../assets/building/OBJ/SmallTower.mtl',
+            x: -800,
+            y: 10,
+            z: -100,
+            scale: 300.0,
+            radius: 160
+        },
+    ]
+};
+
+/**
+ *
+ * STEP 0
+ * ------
+ * Copy car customization.
  */
 
 var bodyColor = Colors.brown;
@@ -21,7 +105,7 @@ var grateColor = Colors.brownDark;
 var doorColor = Colors.brown;
 var handleColor = Colors.brownDark;
 var _previousRAF = null;
-var camStartingPos = new THREE.Vector3(0, 800, 450);
+var camStartingPos = new THREE.Vector3(0, 400, 450);
 var shadowStartingPos = new THREE.Vector3(150, 350, 350);
 var loader;
 var mesh_import;
@@ -38,8 +122,7 @@ var mesh_import;
 var scene,
     camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
     renderer, container;
-const clockMonster = new THREE.Clock()
-const clockTank = new THREE.Clock()
+const clock = new THREE.Clock()
 
 /********** End step 0 **********/
 
@@ -50,44 +133,56 @@ function init() {
 
     // Add the objects
     createGround();
+    loadDistrict();
     createCar();
     createLevel();
+
+    // add custom objects
+    // createLoader();
 
     // Add controls
     createControls();
 
-    // CONTOH PENGGUNAAN LOADER================================
-    loadFbxModel('/assets/city/city-new.fbx')
-                .then(model=>{
-        model.position.x = 0
-        model.position.y = 10
-        model.position.z = -100
-        model.scale.x = 0.5
-        model.scale.y = 0.5
-        model.scale.z = 0.5
-
-        scene.add(model)
-        console.log("Building Loaded")
-    })
-
-    loadObjModel('/assets/building/OBJ/SmallTower.obj',
-        '/assets/building/OBJ/SmallTower.mtl')
+    // CONTOH PENGGUNAAN LOAD OBJ ================================
+    loadObjModel('/assets/building/OBJ/6Story_Stack_Mat.obj',
+            '/assets/building/OBJ/6Story_Stack_Mat.mtl')
         .then(model => {
-            model.position.x = -800
-            model.position.z = -100
+            model.position.x = -400
             model.scale.x = 50
             model.scale.y = 50
             model.scale.z = 50
 
             scene.add(model)
-    })
+            console.log("load sukses")
+        })
 
-    // END LOADER =====================================================
+    // END LOAD OBJ =====================================================
+
 
     // Reset game
     resetGame();
 
     loop();
+}
+
+function loadTruck() {
+    return new Promise((resolve) => {
+        var mtlLoader = new MTLLoader();
+        var objMesh;
+
+        mtlLoader.load('../assets/truckObj/source/Garbage Truck1.mtl', function(mtl) {
+            mtl.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(mtl);
+
+            objLoader.load('../assets/truckObj/source/Garbage Truck1.obj', function(object) {
+                objMesh = object;
+                resolve(objMesh);
+
+            });
+        });
+
+    });
 }
 
 // TODO: it's still need tobe tested
@@ -102,6 +197,23 @@ function loadGltfModel(pathGltf, pathMtl) {
             objMesh.receiveShadow = true;
 
             resolve(objMesh);
+        });
+    });
+}
+
+function loadDistrict() {
+    districtInformatics.buildings.forEach(building => {
+        loadObjModel(building.objPath, building.mtlPath).then((buildingMesh) => {
+            buildingMesh.position.x = building.x;
+            buildingMesh.position.y = building.y;
+            buildingMesh.position.z = building.z;
+
+
+            // buildingMesh.setMaterials(new THREE.MeshPhongMaterial({ color: Colors.green }))
+
+            buildingMesh.scale.set(building.scale, building.scale, building.scale);
+
+            buildingMesh.collidable = createCollidable(building.x, building.z, building.radius);
         });
     });
 }
@@ -163,7 +275,7 @@ function createScene() {
 
     // Add a fog effect to the scene; same color as the
     // background color used in the style sheet
-    scene.fog = new THREE.Fog(0xbadbe4, 700, 1400);
+    scene.fog = new THREE.Fog(0xbadbe4, 700, 1000);
 
     // Create the camera
     aspectRatio = WIDTH / HEIGHT;
@@ -272,8 +384,7 @@ var car, fuel, ground, trees = [],
     collidableTrees = [],
     numTrees = 10,
     collidableFuels = [];
-
-var mixer, animationAction, mixerTank, animationActionTank;
+var mixer, animationAction;
 
 /**
  * Generic box that casts and receives shadows
@@ -316,16 +427,12 @@ function createTire(radiusTop, radiusBottom, height, radialSegments, color, x, y
  * rotation speed as a function of speed)
  */
 function Car() {
-    this.modelReady = false
-    this.animReady = false
-    this.animationArr = []
-    this.currAnim = 3
 
     var direction = new THREE.Vector3(1., 0., 0.);
-    var maxSpeed = 5.;
-    var acceleration = 0.9;
+    var maxSpeed = 10.;
+    var acceleration = 0.25;
     var currentSpeed = 0;
-    var steeringAngle = Math.PI / 100;
+    var steeringAngle = Math.PI / 24;
 
     var movement = {
         'forward': false,
@@ -344,57 +451,18 @@ function Car() {
 
     this.mesh.add(body)
 
-    loadFbxModel('/assets/tankfbx/Tank3.fbx').then(tank=>{
-        // console.log(tank)
+    loadObjModel('../assets/truckObj/source/Garbage Truck1.obj', '../assets/truckObj/source/Garbage Truck1.mtl').then((truck) => {
+        truck.position.x = 0;
+        truck.position.y = 20;
+        truck.position.z = 0;
 
-        tank.animations.forEach(anim => {
-            this.animationArr.push(anim)
-        });
+        truck.rotation.y = 3.14
+        truck.scale.x = 0.2;
+        truck.scale.y = 0.2;
+        truck.scale.z = 0.2;
 
-        mixerTank = new THREE.AnimationMixer(tank);
-
-        tank.position.x = 0;
-        tank.position.y = -10;
-        tank.position.z = 0;
-
-        tank.rotation.y = 3.14
-        tank.scale.x = 0.1;
-        tank.scale.y = 0.1;
-        tank.scale.z = 0.1;
-
-        this.mesh.add(tank)
-
-        this.modelReady = true;
-        this.switchAnim(this.currAnim);
+        this.mesh.add(truck)
     })
-
-    this.switchAnim = function(num) {
-        if (this.animationArr[num]) {
-            if (this.currAnim != num) {
-                animationActionTank.stop();
-
-                animationActionTank = mixerTank.clipAction(this.animationArr[num]);
-                this.currAnim = num
-                animationActionTank.play();
-
-                this.animReady = true;
-
-            } else {
-                animationActionTank = mixerTank.clipAction(this.animationArr[num]);
-                animationActionTank.play();
-
-                this.animReady = true;
-            }
-        } else {
-            console.log("this anim not available")
-        }
-
-    }
-
-    this.stopAnim = function() {
-        if (animationActionTank) 
-            animationActionTank.stop();
-    }
 
     var headLightLeftLight = new THREE.PointLight(0xffcc00, 1, 100);
     headLightLeftLight.position.set(70, 5, 15);
@@ -431,13 +499,9 @@ function Car() {
 
         // update speed according to acceleration
         if (movement.forward) {
-            this.switchAnim(3)
             currentSpeed = Math.min(maxSpeed, currentSpeed + acceleration);
         } else if (movement.backward) {
-            this.switchAnim(2)
             currentSpeed = Math.max(-maxSpeed, currentSpeed - acceleration);
-        }else{
-            this.stopAnim()
         }
 
         // update current position based on speed
@@ -493,7 +557,7 @@ function createCar() {
  * Create simple green, rectangular ground
  */
 function createGround() {
-    ground = createBox(2000, 20, 2000, Colors.greenDark, 0, 0, 0);
+    ground = createBox(3000, 20, 3000, Colors.greenDark, 0, 0, 0);
     scene.add(ground);
 }
 
@@ -549,7 +613,7 @@ function Fuel() {
     this.mesh.add(slab);
 
     loadFbxModel('../assets/monsterfbx/Dragon.fbx').then(monster => {
-        // console.log(monster)
+        console.log(monster)
         monster.animations.forEach(anim => {
             this.animationArr.push(anim)
         });
@@ -628,17 +692,10 @@ function updateRenderShadowPos() {
 function loop() {
 
     if (fuel.modelReady) {
-        mixer.update(clockMonster.getDelta())
+        mixer.update(clock.getDelta())
     } else {
         console.log("MODEL Not Ready")
     }
-
-    if (car.modelReady) {
-        mixerTank.update(clockTank.getDelta())
-    } else {
-        console.log("MODEL Not Ready")
-    }
-
     // method 1
     // handle car movement and collisions
     car.update();
@@ -652,12 +709,37 @@ function loop() {
     updateCamPos();
     updateRenderShadowPos();
 
+    // console.log( car.mesh.position );
+    // camera.position.copy( car.mesh.position )
+    // scene.rotation.y += 0.0025
+    // scene.transl
+
     // check global collisions
     checkCollisions();
 
     // call the loop function again
     requestAnimationFrame(loop);
 
+    // // method 2
+    // requestAnimationFrame((t) => {
+    //     if (_previousRAF === null) {
+    //       _previousRAF = t;
+    //     }
+
+    //     loop();
+    //     // handle car movement and collisions
+    //     car.update();
+
+    //     // handle all growth animations
+    //     animateGrow();
+    //     animateShrink();
+
+    //     renderer.render(scene, camera);
+    //     updateCamPos();
+    //     // check global collisions
+    //     checkCollisions();
+    //     _previousRAF = t;
+    //   });
 }
 
 var left = 37;
@@ -773,7 +855,7 @@ function get_xywh(object) { // TODO: annotate
 
 function createLevel() {
     createFuels();
-    // createTrees();
+    createTrees();
 
     startTimer();
 }
