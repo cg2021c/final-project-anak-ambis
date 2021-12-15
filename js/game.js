@@ -70,7 +70,6 @@ const districtInformatics = {
             scale: 75.0,
             radius: 160
         },
-<<<<<<< Updated upstream
         {
             objPath: '../assets/building/OBJ/SmallTower.obj',
             mtlPath: '../assets/building/OBJ/SmallTower.mtl',
@@ -89,8 +88,6 @@ const districtInformatics = {
             scale: 300.0,
             radius: 160
         },
-=======
->>>>>>> Stashed changes
     ]
 };
 
@@ -211,6 +208,9 @@ function loadDistrict() {
             buildingMesh.position.y = building.y;
             buildingMesh.position.z = building.z;
 
+
+            // buildingMesh.setMaterials(new THREE.MeshPhongMaterial({ color: Colors.green }))
+
             buildingMesh.scale.set(building.scale, building.scale, building.scale);
 
             buildingMesh.collidable = createCollidable(building.x, building.z, building.radius);
@@ -254,6 +254,7 @@ function loadObjModel(pathObj, pathMtl) {
                 objMesh.children.forEach(child => {
                     child.castShadow = true;
                     child.receiveShadow = true;
+
                 });
                 // scene.add( objMesh );
                 resolve(objMesh);
