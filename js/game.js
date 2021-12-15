@@ -70,91 +70,31 @@ function init() {
             console.log("Building Loaded")
         })
 
-    loadObjModel('/assets/building/OBJ/SmallTower.obj',
-            '/assets/building/OBJ/SmallTower.mtl')
-        .then(model => {
-            model.position.x = -800
-            model.position.z = -100
-            model.scale.x = 50
-            model.scale.y = 50
-            model.scale.z = 50
 
-            scene.add(model)
-        })
-
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 150
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -150
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 450
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -450
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
+    const x_tree = [150, -150, 450, -450, 450, -450, 450, -450, 450, -450, -150, 150];
+    const z_tree = [-230, -230, -230, -230, 50, 50, 330, 330, 610, 610, 610, 610];
 
 
-    // a
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 450
-            model.position.z = 50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
+    for (let i = 0; i < x_tree.length; i++) {
+        loadObjModel('/assets/Tree/Pine_4.obj',
+                '/assets/Tree/Pine_4.mtl')
+            .then(model => {
+                model.position.x = x_tree[i]++
+                    model.position.z = z_tree[i]++
+                    model.scale.x = 45
+                model.scale.y = 45
+                model.scale.z = 45
 
-            scene.add(model)
-        })
+                scene.add(model)
+            })
+    }
 
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -450
-            model.position.z = 50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
 
-            scene.add(model)
-        })
 
+
+
+
+<<<<<<< HEAD
         const x_trafficSign = [45, 500, -600];
         const z_trafficSign = [-140, 455, 455];
 
@@ -165,11 +105,43 @@ function init() {
             .then(model => {
             model.position.x = x_trafficSign[i]++
             model.position.z = z_trafficSign[i]++
+=======
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+            '/assets/Building/OBJ/TrafficSign3.mtl')
+        .then(model => {
+            model.position.x = 45
+            model.position.z = -140
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = -500
+            model.position.z = -140
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = -600
+            model.position.z = -140
+>>>>>>> 2a00cff24a832b328a340f1db9b39ff273f3fa6e
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+<<<<<<< HEAD
             })
         }
 
@@ -183,11 +155,154 @@ function init() {
             .then(model => {
             model.position.x = x_trafficLight[i]++
             model.position.z = z_trafficLight[i]++
+=======
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = -600
+            model.position.z = -50
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = -500
+            model.position.z = -50
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = 500
+            model.position.z = -140
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = 600
+            model.position.z = -140
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = 600
+            model.position.z = -50
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+            '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+            model.position.x = 500
+            model.position.z = -50
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+            '/assets/Building/OBJ/TrafficSign3.mtl')
+        .then(model => {
+            model.position.x = 500
+            model.position.z = 455
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+            '/assets/Building/OBJ/TrafficSign3.mtl')
+        .then(model => {
+            model.position.x = -600
+            model.position.z = 455
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+            '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+            model.position.x = -1000
+            model.position.z = 500
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+            '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+            model.position.x = 1000
+            model.position.z = 500
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+            '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+            model.position.x = 1000
+            model.position.z = -100
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+            '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+            model.position.x = -1000
+            model.position.z = -100
+>>>>>>> 2a00cff24a832b328a340f1db9b39ff273f3fa6e
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+<<<<<<< HEAD
             })
         }
     
@@ -201,13 +316,26 @@ function init() {
             .then(model => {
             model.position.x = x_trafficCone[i]++
             model.position.z = z_trafficCone[i]++
+=======
+        })
+
+    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+            '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+            model.position.x = 0
+            model.position.z = -950
+>>>>>>> 2a00cff24a832b328a340f1db9b39ff273f3fa6e
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
+<<<<<<< HEAD
             })
         }
+=======
+        })
+>>>>>>> 2a00cff24a832b328a340f1db9b39ff273f3fa6e
 
 
     // END LOADER =====================================================
