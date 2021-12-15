@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<!-- THREEJS Stuff -->
+		<!-- <script type="text/javascript" src="libs/three.js"></script> -->
+		<!-- <script type="text/javascript" src="/three.min.js"></script> -->
+		<!-- <script type="text/javascript" src="libs/GLTFLoader.js"></script> -->
+		<!-- <script type="text/javascript" src="libs/OBJLoader.js"></script> -->
+		<!-- <script type="text/javascript" src="libs/MTLLoader.js"></script> -->
+		<!-- <script type="text/javascript" src="libs/OBJMTLLoader.js"></script> -->
 
-<head>
-    <!-- THREEJS Stuff -->
-    <!-- <script type="text/javascript" src="libs/three.js"></script> -->
-    <!-- <script type="text/javascript" src="/three.min.js"></script> -->
-    <!-- <script type="text/javascript" src="libs/GLTFLoader.js"></script> -->
-    <!-- <script type="text/javascript" src="libs/OBJLoader.js"></script> -->
-    <!-- <script type="text/javascript" src="libs/MTLLoader.js"></script> -->
-    <!-- <script type="text/javascript" src="libs/OBJMTLLoader.js"></script> -->
+		<!-- Custom JS File -->
+		<script type="module" src="js/game.js"></script>
 
-    <!-- Custom JS File -->
-    <script type="module" src="js/game.js"></script>
+		<!-- Style -->
+		<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
 
-    <!-- Style -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- Identity -->
-    <title>siMubil - Threejs based 3D Game</title>
-    <link rel="shortcut icon" href="https://www.its.ac.id/wp-content/uploads/2017/10/favicon-1.png" type="image/x-icon">
-</head>
-
-<body>
-    <div class="panel" style="z-index: 1;">
-        <h1>
-            <span class="the">si</span>
-            <span class="title">Mubil</span>
-            <span class="byline">just a mobil-mobil an</span>
-        </h1>
-        <div class="entries">
-            <div class="entry">
-                <label>Time</label>
-                <p id="time" class="time">36</p>
-            </div>
-            <div class="entry">
-                <label>Fuel</label>
-                <div class="status">
-                    <div class="fill" id="fuel"></div>
-                </div>
-            </div>
-            <div class="entry">
-                <label>Record</label>
-                <p id="record" class="time">0</p>
-            </div>
-            <div class="entry">
-                <label>Score</label>
-                <p id="score" class="time">36</p>
-            </div>
-        </div>
-        <p class="instructions">Use arrow keys to move. Collect fuel to survive!</p>
-    </div>
-    <div id="world"></div>
-</body>
-
+		<!-- Identity -->
+		<title>siMubil - Threejs based 3D Game</title>
+		<link rel="shortcut icon" href="https://www.its.ac.id/wp-content/uploads/2017/10/favicon-1.png" type="image/x-icon">
+	</head>
+	<body>
+		<div class="panel" style="z-index: 1;">
+			<h1>
+				<span class="the">si</span>
+				<span class="title">Mubil</span>
+				<span class="byline">just a mobil-mobil an</span>
+			</h1>
+			<div class="entries">
+				<div class="entry">
+					<label>Time</label>
+					<p id="time" class="time">36</p>
+				</div>
+				<div class="entry">
+					<label>Fuel</label>
+					<div class="status">
+						<div class="fill" id="fuel"></div>
+					</div>
+				</div>
+				<div class="entry">
+					<label>Record</label>
+					<p id="record" class="time">0</p>
+				</div>
+				<div class="entry">
+					<label>Score</label>
+					<p id="score" class="time">36</p>
+				</div>
+			</div>
+			<p class="instructions">Use arrow keys to move. Collect fuel to survive!</p>
+		</div>
+		<div id="world"></div>
+	</body>
 </html>
