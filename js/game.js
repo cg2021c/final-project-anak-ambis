@@ -27,6 +27,24 @@ var loader;
 var mesh_import;
 var able = true;
 
+var currentPosition = new THREE.Vector3(0, 800, 450);
+var currentLookat = new THREE.Vector3(150, 350, 350);
+
+
+function wantLerp(resx, resy, resz, dest, alpha) {
+    
+    if (resx == NaN) resx = 0;
+    if (resy == NaN) resy = 0;
+    if (resz == NaN) resz = 0;
+    return {
+        x : resx + ( dest.x - resx ) * alpha,
+        y : resy + ( dest.y - resy ) * alpha,
+        z : resz + ( dest.z - resz ) * alpha
+    }
+}
+
+
+
 /**
  *
  * RENDER
@@ -45,6 +63,11 @@ const clockTank = new THREE.Clock()
 /********** End step 0 **********/
 
 function init() {
+
+    currentLookat.x = 0;
+    currentLookat.y = 0;
+    currentLookat.z = 0;
+
 
     createScene();
     createLights();
@@ -670,11 +693,71 @@ function createFuel(x, z) {
     collidableFuels.push(fuel.collidable);
 }
 
+var just5 = 5;
+function isNaN(x) {
+    return x !== x;
+ };
 
-function updateCamPos() {
-    var newPos = new THREE.Vector3(camStartingPos.x, camStartingPos.y, camStartingPos.z);
-    newPos.add(car.mesh.position);
-    camera.position.copy(newPos);
+function updateCamPos(timeElapsed) {
+    const idealOffset = _CalculateIdealOffset();
+    const idealLookat = _CalculateIdealLookat();
+
+    // const t = 0.05;
+    // const t = 4.0 * timeElapsed;
+    var calTimeElapse = Math.min(1.0 / 30.0, timeElapsed * 0.001);
+    var t = 1.0 - Math.pow(0.01, calTimeElapse);
+    
+    
+
+    if (just5 && t){
+        just5--;
+    }
+    // currentPosition.lerp( idealOffset, t );
+    // console.log( t );
+    // var params = new THREE.Vector3();
+    // params.copy( currentPosition );
+    // var res = wantLerp( params.x, params.y, params.z, idealOffset, t);
+    // currentPosition.x = currentPosition.x - 1;
+    // console.log( currentPosition );
+    // currentPosition.lerp(idealOffset, t);
+    // currentLookat.lerp(idealLookat, t);
+
+    // currentPosition = wantLerp(currentPosition, idealOffset, t);
+    // currentLookat = wantLerp(currentLookat, idealLookat, t);
+
+    if (isNaN(t)) t = 0;
+    currentPosition.lerp(idealOffset, t);
+    currentLookat.lerp(idealLookat, t);
+
+
+    camera.position.copy( currentPosition );
+    camera.lookAt( currentLookat );
+    // var newPos = new THREE.Vector3(camStartingPos.x, camStartingPos.y, camStartingPos.z);
+    // newPos.add( car.mesh.position );
+    // camera.position.copy(newPos);
+    // camera.lookAt( car.mesh.position );
+
+    
+    // var qm = new THREE.Quaternion( car.mesh.position.x, car.mesh.position.y, car.mesh.position.z );
+    // qm.slerpQuaternions(newPos, 0.07);
+    // camera.position.applyQuaternion( qm );
+    // camera.quaternion.copy(qm);
+    // camera.quaternion.normalize();
+}
+
+function _CalculateIdealOffset() {
+    const idealOffset = new THREE.Vector3(0, 400, 400);
+    idealOffset.applyQuaternion( car.mesh.quaternion );
+    idealOffset.add( car.mesh.position );
+    return idealOffset;
+}
+
+function _CalculateIdealLookat() {
+    const idealLookat = new THREE.Vector3(0, 0, 0);
+    idealLookat.applyQuaternion( car.mesh.quaternion );
+    idealLookat.add( car.mesh.position );
+    // console.log( idealLookat );
+    return idealLookat;
 }
 
 function updateRenderShadowPos() {
@@ -693,7 +776,8 @@ function updateRenderShadowPos() {
  * Handles controls, game loop, and object collisions
  */
 
-function loop() {
+function loop(t) {
+    // console.log(t);
 
     if (fuel.modelReady) {
         mixer.update(clockMonster.getDelta())
@@ -717,14 +801,14 @@ function loop() {
 
     // render the scene
     renderer.render(scene, camera);
-    updateCamPos();
+    updateCamPos(t);
     updateRenderShadowPos();
 
     // check global collisions
     checkCollisions();
 
     // call the loop function again
-    requestAnimationFrame(loop);
+    requestAnimationFrame((t) => {loop(t) } );
 
 }
 
@@ -1109,3 +1193,31 @@ function animateShrink() {
 
 //init();  // uncomment for JSFiddle, wraps code in onLoad eventListener
 window.addEventListener('load', init, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ * 	lerp( v, alpha ) {
+
+		this.x += ( v.x - this.x ) * alpha;
+		this.y += ( v.y - this.y ) * alpha;
+		this.z += ( v.z - this.z ) * alpha;
+
+		return this;
+
+	}
+ */
