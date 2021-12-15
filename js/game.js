@@ -58,20 +58,20 @@ function init() {
 
     // CONTOH PENGGUNAAN LOADER================================
     loadFbxModel('/assets/city/city-new.fbx')
-                .then(model=>{
-        model.position.x = 0
-        model.position.y = 10
-        model.position.z = -100
-        model.scale.x = 0.5
-        model.scale.y = 0.5
-        model.scale.z = 0.5
+        .then(model => {
+            model.position.x = 0
+            model.position.y = 10
+            model.position.z = -100
+            model.scale.x = 0.5
+            model.scale.y = 0.5
+            model.scale.z = 0.5
 
-        scene.add(model)
-        console.log("Building Loaded")
-    })
+            scene.add(model)
+            console.log("Building Loaded")
+        })
 
     loadObjModel('/assets/building/OBJ/SmallTower.obj',
-        '/assets/building/OBJ/SmallTower.mtl')
+            '/assets/building/OBJ/SmallTower.mtl')
         .then(model => {
             model.position.x = -800
             model.position.z = -100
@@ -80,10 +80,10 @@ function init() {
             model.scale.z = 50
 
             scene.add(model)
-    })
+        })
 
     loadObjModel('/assets/Tree/Pine_4.obj',
-        '/assets/Tree/Pine_4.mtl')
+            '/assets/Tree/Pine_4.mtl')
         .then(model => {
             model.position.x = 150
             model.position.z = -230
@@ -92,7 +92,19 @@ function init() {
             model.scale.z = 45
 
             scene.add(model)
-    })
+        })
+
+    loadObjModel('/assets/Tree/Pine_4.obj',
+            '/assets/Tree/Pine_4.mtl')
+        .then(model => {
+            model.position.x = -150
+            model.position.z = -230
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
 
     // END LOADER =====================================================
 
@@ -356,7 +368,7 @@ function Car() {
 
     this.mesh.add(body)
 
-    loadFbxModel('/assets/tankfbx/Tank3.fbx').then(tank=>{
+    loadFbxModel('/assets/tankfbx/Tank3.fbx').then(tank => {
         // console.log(tank)
 
         tank.animations.forEach(anim => {
@@ -404,7 +416,7 @@ function Car() {
     }
 
     this.stopAnim = function() {
-        if (animationActionTank) 
+        if (animationActionTank)
             animationActionTank.stop();
     }
 
@@ -448,7 +460,7 @@ function Car() {
         } else if (movement.backward) {
             this.switchAnim(2)
             currentSpeed = Math.max(-maxSpeed, currentSpeed - acceleration);
-        }else{
+        } else {
             this.stopAnim()
         }
 
