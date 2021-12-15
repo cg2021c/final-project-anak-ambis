@@ -82,78 +82,23 @@ function init() {
             scene.add(model)
         })
 
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 150
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
+    const x_tree = [150, -150, 450, -450, 450, -450, 450, -450, 450, -450, -150, 150];
+    const z_tree = [-230, -230, -230, -230, 50, 50, 330, 330, 610, 610, 610, 610];
 
-            scene.add(model)
-        })
+    for (let i = 0; i < x_tree.length; i++) {
+        loadObjModel('/assets/Tree/Pine_4.obj',
+                '/assets/Tree/Pine_4.mtl')
+            .then(model => {
+                model.position.x = x_tree[i]++
+                    model.position.z = z_tree[i]++
+                    model.scale.x = 45
+                model.scale.y = 45
+                model.scale.z = 45
 
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -150
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
+                scene.add(model)
+            })
+    }
 
-            scene.add(model)
-        })
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 450
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -450
-            model.position.z = -230
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-
-
-    // a
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = 450
-            model.position.z = 50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
-
-    loadObjModel('/assets/Tree/Pine_4.obj',
-            '/assets/Tree/Pine_4.mtl')
-        .then(model => {
-            model.position.x = -450
-            model.position.z = 50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-        })
 
     // END LOADER =====================================================
 
