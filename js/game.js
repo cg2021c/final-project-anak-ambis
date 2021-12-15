@@ -155,8 +155,8 @@ function init() {
             scene.add(model)
         })
 
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+        '/assets/Building/OBJ/TrafficSign3.mtl')
         .then(model => {
             model.position.x = 45
             model.position.z = -140
@@ -166,18 +166,6 @@ function init() {
 
             scene.add(model)
     })
-    
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -45
-            model.position.z = -140
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
 
     loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
         '/assets/Building/OBJ/TrafficLight.mtl')
@@ -275,8 +263,8 @@ function init() {
             scene.add(model)
     })
 
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+        '/assets/Building/OBJ/TrafficSign3.mtl')
         .then(model => {
             model.position.x = 500
             model.position.z = 455
@@ -287,32 +275,9 @@ function init() {
             scene.add(model)
     })
 
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = 600
-            model.position.z = 455
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
 
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -500
-            model.position.z = 455
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
+    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+        '/assets/Building/OBJ/TrafficSign3.mtl')
         .then(model => {
             model.position.x = -600
             model.position.z = 455
