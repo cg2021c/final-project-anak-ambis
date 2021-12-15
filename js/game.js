@@ -105,6 +105,29 @@ function init() {
 
             scene.add(model)
         })
+    loadObjModel('/assets/Tree/Pine_4.obj',
+            '/assets/Tree/Pine_4.mtl')
+        .then(model => {
+            model.position.x = 450
+            model.position.z = -230
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
+
+    loadObjModel('/assets/Tree/Pine_4.obj',
+            '/assets/Tree/Pine_4.mtl')
+        .then(model => {
+            model.position.x = -450
+            model.position.z = -230
+            model.scale.x = 45
+            model.scale.y = 45
+            model.scale.z = 45
+
+            scene.add(model)
+        })
 
     // END LOADER =====================================================
 
