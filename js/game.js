@@ -25,6 +25,7 @@ var camStartingPos = new THREE.Vector3(0, 800, 450);
 var shadowStartingPos = new THREE.Vector3(150, 350, 350);
 var loader;
 var mesh_import;
+var able = true;
 
 /**
  *
@@ -796,6 +797,7 @@ function objectCollidedWith(object, collidableMeshList) { // TODO: place elsewhe
 function checkCollisions() {
 
     // mark victory and advance level
+    // fuelExist = !objectInBound(car.collidable, collidableFuels);
     if (objectInBound(car.collidable, collidableFuels)) {
         endLevel();
     }
@@ -806,6 +808,7 @@ function objectInBound(object, objectList) { // TODO: annotate
     for (let target of objectList) {
         var t = get_xywh(target);
         if ((Math.abs(o.x - t.x) * 2 < t.w + o.w) && (Math.abs(o.y - t.y) * 2 < t.h + o.h)) {
+            able = true;
             return true;
         }
     }
@@ -846,6 +849,7 @@ function createLevel() {
 }
 
 function endLevel() {
+    
     fuel.switchAnim(2);
 
     setTimeout(() => {
@@ -854,11 +858,10 @@ function endLevel() {
 
         updateStatus();
         stopTimer();
-
         setTimeout(createLevel, 2000);
 
+        
     }, 1000);
-
 }
 
 function resetGame() {
@@ -1011,10 +1014,13 @@ function endTrees() {
 }
 
 function createFuels() {
-    var x = Math.random() * 600 - 300;
-    var y = Math.random() * 400 - 200;
-    createFuel(x, y);
-    startGrowth(fuel.mesh, 50, 10, 1);
+    if (able){
+        able = false;
+        var x = Math.random() * 600 - 300;
+        var y = Math.random() * 400 - 200;
+        createFuel(x, y);
+        startGrowth(fuel.mesh, 50, 10, 1);
+    }
 }
 
 function endFuels() {
