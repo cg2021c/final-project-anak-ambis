@@ -155,198 +155,59 @@ function init() {
             scene.add(model)
         })
 
-    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
-        '/assets/Building/OBJ/TrafficSign3.mtl')
-        .then(model => {
-            model.position.x = 45
-            model.position.z = -140
+        const x_trafficSign = [45, 500, -600];
+        const z_trafficSign = [-140, 455, 455];
+
+        for (let i = 0; i < x_trafficSign.length; i++)
+        {
+            loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+                        '/assets/Building/OBJ/TrafficSign3.mtl')
+            .then(model => {
+            model.position.x = x_trafficSign[i]++
+            model.position.z = z_trafficSign[i]++
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
-    })
+            })
+        }
 
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -500
-            model.position.z = -140
+        const x_trafficLight = [-500, -600, -600, -500, 500, 600, 600, 500];
+        const z_trafficLight = [-140, -140, -50, -50, -140, -140, -50, -50];
+
+        for(let i = 0; i < x_trafficLight.length; i++)
+        {
+            loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+                        '/assets/Building/OBJ/TrafficLight.mtl')
+            .then(model => {
+            model.position.x = x_trafficLight[i]++
+            model.position.z = z_trafficLight[i]++
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
-    })
+            })
+        }
+    
+        const x_trafficCone = [-1000, 1000, 1000, -1000, 0];
+        const z_trafficCone = [500, 500, -100, -100, -950];
 
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -600
-            model.position.z = -140
+        for(let i = 0; i < x_trafficCone.length; i++)
+        {
+            loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+                        '/assets/Building/OBJ/TrafficCone.mtl')
+            .then(model => {
+            model.position.x = x_trafficCone[i]++
+            model.position.z = z_trafficCone[i]++
             model.scale.x = 45
             model.scale.y = 45
             model.scale.z = 45
 
             scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -600
-            model.position.z = -50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = -500
-            model.position.z = -50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = 500
-            model.position.z = -140
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = 600
-            model.position.z = -140
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = 600
-            model.position.z = -50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-        '/assets/Building/OBJ/TrafficLight.mtl')
-        .then(model => {
-            model.position.x = 500
-            model.position.z = -50
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
-        '/assets/Building/OBJ/TrafficSign3.mtl')
-        .then(model => {
-            model.position.x = 500
-            model.position.z = 455
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-
-    loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
-        '/assets/Building/OBJ/TrafficSign3.mtl')
-        .then(model => {
-            model.position.x = -600
-            model.position.z = 455
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-        '/assets/Building/OBJ/TrafficCone.mtl')
-        .then(model => {
-            model.position.x = -1000
-            model.position.z = 500
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-        '/assets/Building/OBJ/TrafficCone.mtl')
-        .then(model => {
-            model.position.x = 1000
-            model.position.z = 500
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-        '/assets/Building/OBJ/TrafficCone.mtl')
-        .then(model => {
-            model.position.x = 1000
-            model.position.z = -100
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-        '/assets/Building/OBJ/TrafficCone.mtl')
-        .then(model => {
-            model.position.x = -1000
-            model.position.z = -100
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
-
-    loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-        '/assets/Building/OBJ/TrafficCone.mtl')
-        .then(model => {
-            model.position.x = 0
-            model.position.z = -950
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-    })
+            })
+        }
 
 
     // END LOADER =====================================================
