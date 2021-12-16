@@ -57,6 +57,7 @@ function wantLerp(resx, resy, resz, dest, alpha) {
 var scene,
     camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
     renderer, container;
+const GROUND_X = 2000, GROUND_Z = 2000;
 const clockMonster = new THREE.Clock()
 const clockTank = new THREE.Clock()
 
@@ -584,7 +585,7 @@ function createCar() {
  * Create simple green, rectangular ground
  */
 function createGround() {
-    ground = createBox(2000, 20, 2000, Colors.greenDark, 0, 0, 0);
+    ground = createBox(GROUND_X, 20, GROUND_Z, Colors.greenDark, 0, 0, 0);
     scene.add(ground);
 }
 
@@ -807,6 +808,8 @@ function loop(t) {
     // check global collisions
     checkCollisions();
 
+    checkCarFall();
+
     // call the loop function again
     requestAnimationFrame((t) => {loop(t) } );
 
@@ -887,6 +890,33 @@ function checkCollisions() {
     }
 }
 
+function checkCarFall(){
+    if(car.mesh.position){
+        var isFall = false
+        if(car.mesh.position.x > GROUND_X/2 || car.mesh.position.x < -GROUND_X/2){
+            isFall = true
+        }
+        if(car.mesh.position.z > GROUND_Z/2 || car.mesh.position.z < -GROUND_Z/2){
+            isFall = true
+        }
+
+        if(isFall){
+            car.mesh.rotation.z = -1.57
+            car.mesh.position.y-=10
+
+            camera.position.set(car.mesh.position.x, 400, car.mesh.position.z);
+            camera.lookAt(car.mesh.position.x, car.mesh.position.y, car.mesh.position.z);
+
+            if(car.mesh.position.y < -100){
+                isFall = false
+                endLevel()
+            }
+        }
+    }
+    // else
+    //     console.log("no car")
+}
+
 function objectInBound(object, objectList) { // TODO: annotate
     var o = get_xywh(object);
     for (let target of objectList) {
@@ -927,6 +957,7 @@ function get_xywh(object) { // TODO: annotate
 
 function createLevel() {
     createFuels();
+    // createCars();
     // createTrees();
 
     startTimer();
@@ -939,10 +970,13 @@ function endLevel() {
     setTimeout(() => {
         endFuels();
         endTrees();
+        endCar();
 
         updateStatus();
         stopTimer();
-        setTimeout(createLevel, 2000);
+        setTimeout(createLevel, 1500);
+        setTimeout(createCars, 2000);
+
 
         
     }, 1000);
@@ -1107,9 +1141,24 @@ function createFuels() {
     }
 }
 
+function createCars() {
+
+        var x = Math.random() * 600 - 300;
+        var y = Math.random() * 400 - 200;
+        createCar();
+        startGrowth(car.mesh, 50, 10, 1);
+        console.log("Car created ", car.mesh.position)
+
+}
+
 function endFuels() {
     var scale = fuel.mesh.scale.x;
     startShrink(fuel.mesh, 25, -10, scale);
+}
+
+function endCar() {
+    var scale = car.mesh.scale.x;
+    startShrink(car.mesh, 25, -10, scale);
 }
 
 /**
