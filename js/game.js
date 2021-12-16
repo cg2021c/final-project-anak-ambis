@@ -89,7 +89,7 @@ function init() {
 
     // CONTOH PENGGUNAAN LOADER================================
     surabaya.forEach(currmodel => {
-        loadFbxModel('/assets/city/' + currmodel + '.fbx')
+        loadFbxModel('./assets/city/' + currmodel + '.fbx')
             .then(model => {
                 model.position.x = 0
                 if (currmodel == 'rail') model.position.y = 15
@@ -104,7 +104,7 @@ function init() {
             })
     });
 
-    loadFbxModel('/assets/city/CargoTrain_Front.fbx')
+    loadFbxModel('./assets/city/CargoTrain_Front.fbx')
     .then(model => {
         model.position.x = 1000
         model.position.y = 15
@@ -124,8 +124,8 @@ function init() {
     const z_tree = [-230, -230, -230, -230, 50, 50, 330, 330, 610, 610, 610, 610];
 
     for (let i = 0; i < x_tree.length; i++) {
-        loadObjModel('/assets/Tree/Pine_4.obj',
-                '/assets/Tree/Pine_4.mtl')
+        loadObjModel('./assets/Tree/Pine_4.obj',
+                './assets/Tree/Pine_4.mtl')
             .then(model => {
                 model.position.x = x_tree[i]++
                     model.position.z = z_tree[i]++
@@ -142,8 +142,8 @@ function init() {
 
     for (let i = 0; i < x_trafficSign.length; i++)
     {
-        loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
-                    '/assets/Building/OBJ/TrafficSign3.mtl')
+        loadObjModel('./assets/Building/OBJ/TrafficSign3.obj',
+                    './assets/Building/OBJ/TrafficSign3.mtl')
         .then(model => {
         model.position.x = x_trafficSign[i]++
         model.position.z = z_trafficSign[i]++
@@ -160,8 +160,8 @@ function init() {
 
     for(let i = 0; i < x_trafficLight.length; i++)
     {
-        loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-                    '/assets/Building/OBJ/TrafficLight.mtl')
+        loadObjModel('./assets/Building/OBJ/TrafficLight.obj',
+                    './assets/Building/OBJ/TrafficLight.mtl')
         .then(model => {
         model.position.x = x_trafficLight[i]++
         model.position.z = z_trafficLight[i]++
@@ -178,8 +178,8 @@ function init() {
 
     for(let i = 0; i < x_trafficCone.length; i++)
     {
-        loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-                    '/assets/Building/OBJ/TrafficCone.mtl')
+        loadObjModel('./assets/Building/OBJ/TrafficCone.obj',
+                    './assets/Building/OBJ/TrafficCone.mtl')
         .then(model => {
         model.position.x = x_trafficCone[i]++
         model.position.z = z_trafficCone[i]++
@@ -461,7 +461,7 @@ function Car() {
 
     this.mesh.add(body)
 
-    loadFbxModel('/assets/tankfbx/Tank2.fbx').then(tank => {
+    loadFbxModel('./assets/tankfbx/Tank2.fbx').then(tank => {
         // console.log(tank)
 
         tank.animations.forEach(anim => {
