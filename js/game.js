@@ -847,7 +847,7 @@ function createControls() {
                 car.moveBackward();
             }
             if (key == 90){
-                console.log("NOSSS")
+                // console.log("NOSSS")
                 car.maxSpeed = 12.
                 car.acceleration = 5
             }
@@ -872,7 +872,7 @@ function createControls() {
                 car.stopBackward();
             }
             if (key == 90){
-                console.log("NOSSS MATI")
+                // console.log("NOSSS MATI")
                 car.maxSpeed = 5.
                 car.acceleration = 0.9
             }
@@ -1055,10 +1055,10 @@ function startTimer() {
 
 function updateTimer() {
     // time -= 1;
-    updateTimeDisplay();
+    // updateTimeDisplay();
 
     // Added in step 2
-    // fuelLeft -= 5;
+    fuelLeft -= 5;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
