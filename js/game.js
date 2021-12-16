@@ -417,8 +417,8 @@ function Car() {
     this.currAnim = 3
 
     var direction = new THREE.Vector3(1., 0., 0.);
-    var maxSpeed = 5.;
-    var acceleration = 0.9;
+    this.maxSpeed = 5.;
+    this.acceleration = 0.9;
     var currentSpeed = 0;
     var steeringAngle = Math.PI / 100;
 
@@ -524,13 +524,13 @@ function Car() {
             is_moving = false;
         }
 
-        // update speed according to acceleration
+        // update speed according to this.acceleration
         if (movement.forward) {
             this.switchAnim(3)
-            currentSpeed = Math.min(maxSpeed, currentSpeed + acceleration);
+            currentSpeed = Math.min(this.maxSpeed, currentSpeed + this.acceleration);
         } else if (movement.backward) {
             this.switchAnim(2)
-            currentSpeed = Math.max(-maxSpeed, currentSpeed - acceleration);
+            currentSpeed = Math.max(-this.maxSpeed, currentSpeed - this.acceleration);
         } else {
             this.stopAnim()
         }
@@ -538,13 +538,13 @@ function Car() {
         // update current position based on speed
         if (is_moving) {
             sign = currentSpeed / Math.abs(currentSpeed);
-            currentSpeed = Math.abs(currentSpeed) - acceleration / 1.5;
+            currentSpeed = Math.abs(currentSpeed) - this.acceleration / 1.5;
             currentSpeed *= sign;
 
             // update and apply rotation based on speed
             if (is_turning) {
                 currentAngle = movement.left ? -steeringAngle : steeringAngle;
-                currentAngle *= currentSpeed / maxSpeed;
+                currentAngle *= currentSpeed / this.maxSpeed;
                 R = computeR(currentAngle);
                 direction = direction.applyMatrix3(R);
                 this.mesh.rotation.y -= currentAngle;
@@ -846,6 +846,11 @@ function createControls() {
             if (key == down) {
                 car.moveBackward();
             }
+            if (key == 90){
+                console.log("NOSSS")
+                car.maxSpeed = 12.
+                car.acceleration = 5
+            }
         }
     );
 
@@ -865,6 +870,11 @@ function createControls() {
             }
             if (key == down) {
                 car.stopBackward();
+            }
+            if (key == 90){
+                console.log("NOSSS MATI")
+                car.maxSpeed = 5.
+                car.acceleration = 0.9
             }
         }
     );
