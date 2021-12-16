@@ -35,7 +35,6 @@ var isLevelEnd = false
 
 
 function wantLerp(resx, resy, resz, dest, alpha) {
-    
     if (resx == NaN) resx = 0;
     if (resy == NaN) resy = 0;
     if (resz == NaN) resz = 0;
@@ -60,9 +59,16 @@ function wantLerp(resx, resy, resz, dest, alpha) {
 var scene,
     camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
     renderer, container;
+var sepur;
 const GROUND_X = 2000, GROUND_Z = 2000;
 const clockMonster = new THREE.Clock()
 const clockTank = new THREE.Clock()
+
+const surabaya = [
+    'city-new-ver',
+    'rail',
+    'farms'
+];
 
 /********** End step 0 **********/
 
@@ -85,18 +91,34 @@ function init() {
     createControls();
 
     // CONTOH PENGGUNAAN LOADER================================
-    loadFbxModel('/assets/city/city-new.fbx')
-        .then(model => {
-            model.position.x = 0
-            model.position.y = 10
-            model.position.z = -100
-            model.scale.x = 0.5
-            model.scale.y = 0.5
-            model.scale.z = 0.5
+    surabaya.forEach(currmodel => {
+        loadFbxModel('/assets/city/' + currmodel + '.fbx')
+            .then(model => {
+                model.position.x = 0
+                if (currmodel == 'rail') model.position.y = 20
+                else model.position.y = 10
+                model.position.z = -100
+                model.scale.x = 0.5
+                model.scale.y = 0.5
+                model.scale.z = 0.5
+    
+                scene.add(model)
+                console.log("Building Loaded")
+            })
+    });
 
-            scene.add(model)
-            console.log("Building Loaded")
-        })
+    sepur = loadFbxModel('/assets/city/' + 'train' + '.fbx')
+    .then(model => {
+        model.position.x = 0
+        model.position.y = 20
+        model.position.z = -100
+        model.scale.x = 0.5
+        model.scale.y = 0.5
+        model.scale.z = 0.5
+
+        scene.add(model)
+        console.log("Building Loaded")
+    });
 
 
     const x_tree = [150, -150, 450, -450, 450, -450, 450, -450, 450, -450, -150, 150];
@@ -208,8 +230,15 @@ function loadFbxModel(pathFbx) {
 
         fbxLoader.load(pathFbx, function(model) {
             objMesh = model
-            resolve(objMesh);
+            objMesh.castShadow = true;
+            objMesh.receiveShadow = true;
+            objMesh.children.forEach(child => {
+                child.castShadow = true;
+                child.receiveShadow = true;
 
+            });
+            // scene.add( objMesh );
+            resolve(objMesh);
         });
     });
 }
