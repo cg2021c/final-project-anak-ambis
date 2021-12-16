@@ -30,6 +30,9 @@ var able = true;
 var currentPosition = new THREE.Vector3(0, 800, 450);
 var currentLookat = new THREE.Vector3(150, 350, 350);
 
+var isLevelEnd = false
+
+
 
 function wantLerp(resx, resy, resz, dest, alpha) {
     
@@ -565,6 +568,7 @@ function Car() {
 
     this.reset = function() {
         car.mesh.position.set(-300, 25, -150);
+        car.mesh.rotation.set(0, 0, 0);
         direction = new THREE.Vector3(1., 0., 0.);
         currentSpeed = 0;
         movement['forward'] = movement['backward'] = false
@@ -578,7 +582,7 @@ function Car() {
  */
 function createCar() {
     car = new Car();
-    scene.add(car.mesh);
+    scene.add(car.mesh)
 }
 
 /**
@@ -700,6 +704,7 @@ function isNaN(x) {
  };
 
 function updateCamPos(timeElapsed) {
+    // console.log("updateCamPOS")
     const idealOffset = _CalculateIdealOffset();
     const idealLookat = _CalculateIdealLookat();
 
@@ -802,7 +807,10 @@ function loop(t) {
 
     // render the scene
     renderer.render(scene, camera);
-    updateCamPos(t);
+
+    // if(!isLevelEnd)
+        updateCamPos(t);
+    
     updateRenderShadowPos();
 
     // check global collisions
@@ -893,28 +901,47 @@ function checkCollisions() {
 function checkCarFall(){
     if(car.mesh.position){
         var isFall = false
-        if(car.mesh.position.x > GROUND_X/2 || car.mesh.position.x < -GROUND_X/2){
-            isFall = true
+
+        if(isLevelEnd){
+            isLevelEnd = false
+            // endCar();
+
+            // setTimeout(() => {
+                
+            // }, 5000);
+            resetGame();    
+
+            // endLevel()
+            // setTimeout(() => {
+            //     createCars()
+            // }, 2000);
+
         }
-        if(car.mesh.position.z > GROUND_Z/2 || car.mesh.position.z < -GROUND_Z/2){
-            isFall = true
-        }
+        else{
+            // console.log(car.mesh.position)
+            if(car.mesh.position.x > GROUND_X/2 || car.mesh.position.x < -GROUND_X/2){
+                isFall = true
+            }
+            if(car.mesh.position.z > GROUND_Z/2 || car.mesh.position.z < -GROUND_Z/2){
+                isFall = true
+            }
+    
+            if(isFall){
+                console.log("JATUHHHHHH")
 
-        if(isFall){
-            car.mesh.rotation.z = -1.57
-            car.mesh.position.y-=10
-
-            camera.position.set(car.mesh.position.x, 400, car.mesh.position.z);
-            camera.lookAt(car.mesh.position.x, car.mesh.position.y, car.mesh.position.z);
-
-            if(car.mesh.position.y < -100){
-                isFall = false
-                endLevel()
+                car.mesh.rotation.z = -1.57
+                car.mesh.position.y-=10
+    
+                camera.position.set(car.mesh.position.x, 400, car.mesh.position.z);
+                camera.lookAt(car.mesh.position.x, car.mesh.position.y, car.mesh.position.z);
+    
+                if(car.mesh.position.y < -1000){
+                    isFall = false
+                    isLevelEnd = true
+                }
             }
         }
     }
-    // else
-    //     console.log("no car")
 }
 
 function objectInBound(object, objectList) { // TODO: annotate
@@ -964,20 +991,18 @@ function createLevel() {
 }
 
 function endLevel() {
+    console.log("END LEVEL")
     
     fuel.switchAnim(2);
 
     setTimeout(() => {
         endFuels();
         endTrees();
-        endCar();
 
         updateStatus();
         stopTimer();
         setTimeout(createLevel, 1500);
-        setTimeout(createCars, 2000);
-
-
+        // setTimeout(createCars, 2000);
         
     }, 1000);
 }
@@ -1147,7 +1172,7 @@ function createCars() {
         var y = Math.random() * 400 - 200;
         createCar();
         startGrowth(car.mesh, 50, 10, 1);
-        console.log("Car created ", car.mesh.position)
+        // console.log("Car created ", car.mesh.position)
 
 }
 
