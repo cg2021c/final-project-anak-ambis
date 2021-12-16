@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<!-- THREEJS Stuff -->
-		<!-- <script type="text/javascript" src="libs/three.js"></script> -->
-		<!-- <script type="text/javascript" src="/three.min.js"></script> -->
-		<!-- <script type="text/javascript" src="libs/GLTFLoader.js"></script> -->
-		<!-- <script type="text/javascript" src="libs/OBJLoader.js"></script> -->
-		<!-- <script type="text/javascript" src="libs/MTLLoader.js"></script> -->
-		<!-- <script type="text/javascript" src="libs/OBJMTLLoader.js"></script> -->
 
 		<!-- Custom JS File -->
 		<script type="module" src="js/game.js"></script>
@@ -17,21 +10,26 @@
 		<link href="css/style.css" rel="stylesheet">
 
 		<!-- Identity -->
-		<title>siMubil - Threejs based 3D Game</title>
+		<title>siBanTank - Threejs based 3D Game</title>
 		<link rel="shortcut icon" href="https://www.its.ac.id/wp-content/uploads/2017/10/favicon-1.png" type="image/x-icon">
+
+		<!-- Bootstrap Stuff -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	</head>
 	<body>
 		<div class="panel" style="z-index: 1;">
 			<h1>
 				<span class="the">si</span>
-				<span class="title">Mubil</span>
-				<span class="byline">just a mobil-mobil an</span>
+				<span class="title">BanTank</span>
+				<span class="byline">Tank Menyerang Monster</span>
 			</h1>
+
 			<div class="entries">
-				<div class="entry">
+				<!-- <div class="entry">
 					<label>Time</label>
 					<p id="time" class="time">36</p>
-				</div>
+				</div> -->
 				<div class="entry">
 					<label>Fuel</label>
 					<div class="status">
@@ -47,7 +45,7 @@
 					<p id="score" class="time">36</p>
 				</div>
 			</div>
-			<p class="instructions">Use arrow keys to move. Collect fuel to survive!</p>
+			<p class="instructions">Gerakan Mobil : Arah Panah, Percepat : Z</p>
 		</div>
 		<div id="world"></div>
 	</body>
