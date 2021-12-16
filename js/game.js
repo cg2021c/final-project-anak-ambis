@@ -100,7 +100,7 @@ function init() {
                 model.scale.z = 0.5
     
                 scene.add(model)
-                console.log("Building Loaded")
+                // console.log("building Loaded")
             })
     });
 
@@ -142,8 +142,8 @@ function init() {
 
     for (let i = 0; i < x_trafficSign.length; i++)
     {
-        loadObjModel('./assets/Building/OBJ/TrafficSign3.obj',
-                    './assets/Building/OBJ/TrafficSign3.mtl')
+        loadObjModel('./assets/building/OBJ/TrafficSign3.obj',
+                    './assets/building/OBJ/TrafficSign3.mtl')
         .then(model => {
         model.position.x = x_trafficSign[i]++
         model.position.z = z_trafficSign[i]++
@@ -160,8 +160,8 @@ function init() {
 
     for(let i = 0; i < x_trafficLight.length; i++)
     {
-        loadObjModel('./assets/Building/OBJ/TrafficLight.obj',
-                    './assets/Building/OBJ/TrafficLight.mtl')
+        loadObjModel('./assets/building/OBJ/TrafficLight.obj',
+                    './assets/building/OBJ/TrafficLight.mtl')
         .then(model => {
         model.position.x = x_trafficLight[i]++
         model.position.z = z_trafficLight[i]++
@@ -178,8 +178,8 @@ function init() {
 
     for(let i = 0; i < x_trafficCone.length; i++)
     {
-        loadObjModel('./assets/Building/OBJ/TrafficCone.obj',
-                    './assets/Building/OBJ/TrafficCone.mtl')
+        loadObjModel('./assets/building/OBJ/TrafficCone.obj',
+                    './assets/building/OBJ/TrafficCone.mtl')
         .then(model => {
         model.position.x = x_trafficCone[i]++
         model.position.z = z_trafficCone[i]++
@@ -503,7 +503,7 @@ function Car() {
                 this.animReady = true;
             }
         } else {
-            console.log("this anim not available")
+            console.warn("Animation not available")
         }
 
     }
@@ -836,13 +836,13 @@ function loop(t) {
     if (fuel.modelReady) {
         mixer.update(clockMonster.getDelta())
     } else {
-        console.log("MODEL Not Ready")
+        console.warn("MODEL Not Ready")
     }
 
     if (car.modelReady) {
         mixerTank.update(clockTank.getDelta())
     } else {
-        console.log("MODEL Not Ready")
+        console.warn("MODEL Not Ready")
     }
 
     // method 1
@@ -1041,9 +1041,7 @@ function createLevel() {
     startTimer();
 }
 
-function endLevel() {
-    console.log("END LEVEL")
-    
+function endLevel() {    
     fuel.switchAnim(2);
 
     setTimeout(() => {
