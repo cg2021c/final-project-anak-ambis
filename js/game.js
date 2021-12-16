@@ -27,10 +27,6 @@ var loader;
 var mesh_import;
 var able = true;
 
-var camPlusX = 0;
-var camPlusY = 0;
-var camPlusZ = 0;
-
 var currentPosition = new THREE.Vector3(0, 800, 450);
 var currentLookat = new THREE.Vector3(150, 350, 350);
 
@@ -72,6 +68,7 @@ function init() {
     currentLookat.x = 0;
     currentLookat.y = 0;
     currentLookat.z = 0;
+
 
     createScene();
     createLights();
@@ -750,7 +747,7 @@ function updateCamPos(timeElapsed) {
 }
 
 function _CalculateIdealOffset() {
-    const idealOffset = new THREE.Vector3(-240 + camPlusX, 80 + camPlusY, 0 + camPlusZ);
+    const idealOffset = new THREE.Vector3(-400, 200, 0);
     idealOffset.applyQuaternion( car.mesh.quaternion );
     idealOffset.add( car.mesh.position );
     return idealOffset;
@@ -841,13 +838,6 @@ function createControls() {
             if (key == down) {
                 car.moveBackward();
             }
-            if (ev.keyCode == 32) freeze = true;
-            if (ev.keyCode == 33) camPlusY += 0.1;
-            if (ev.keyCode == 34) camPlusY -= 0.1;
-            if (ev.keyCode == 37) camPlusX -= 0.1; // Left
-            if (ev.keyCode == 38) camPlusZ -= 0.1; // Up
-            if (ev.keyCode == 39) camPlusX += 0.1; // Right
-            if (ev.keyCode == 40) camPlusZ += 0.1; // Down
         }
     );
 
@@ -1252,13 +1242,9 @@ function animateShrink() {
 
 //init();  // uncomment for JSFiddle, wraps code in onLoad eventListener
 window.addEventListener('load', init, false);
-/**
- * 
- arrow left	37
- arrow up	38
- arrow right	39
- arrow down	40
- */
+
+
+
 
 
 
