@@ -32,8 +32,6 @@ var currentLookat = new THREE.Vector3(150, 350, 350);
 
 var isLevelEnd = false
 
-
-
 function wantLerp(resx, resy, resz, dest, alpha) {
     if (resx == NaN) resx = 0;
     if (resy == NaN) resy = 0;
@@ -44,8 +42,6 @@ function wantLerp(resx, resy, resz, dest, alpha) {
         z : resz + ( dest.z - resz ) * alpha
     }
 }
-
-
 
 /**
  *
@@ -78,7 +74,6 @@ function init() {
     currentLookat.y = 0;
     currentLookat.z = 0;
 
-
     createScene();
     createLights();
 
@@ -95,7 +90,7 @@ function init() {
         loadFbxModel('/assets/city/' + currmodel + '.fbx')
             .then(model => {
                 model.position.x = 0
-                if (currmodel == 'rail') model.position.y = 20
+                if (currmodel == 'rail') model.position.y = 15
                 else model.position.y = 10
                 model.position.z = -100
                 model.scale.x = 0.5
@@ -107,9 +102,9 @@ function init() {
             })
     });
 
-    sepur = loadFbxModel('/assets/city/' + 'train' + '.fbx')
+    loadFbxModel('/assets/city/' + 'train' + '.fbx')
     .then(model => {
-        model.position.x = 0
+        model.position.x = -3000
         model.position.y = 20
         model.position.z = -100
         model.scale.x = 0.5
@@ -117,13 +112,12 @@ function init() {
         model.scale.z = 0.5
 
         scene.add(model)
-        console.log("Building Loaded")
+        sepur = model
+        console.log("Sepur Loaded")
     });
-
 
     const x_tree = [150, -150, 450, -450, 450, -450, 450, -450, 450, -450, -150, 150];
     const z_tree = [-230, -230, -230, -230, 50, 50, 330, 330, 610, 610, 610, 610];
-
 
     for (let i = 0; i < x_tree.length; i++) {
         loadObjModel('/assets/Tree/Pine_4.obj',
@@ -139,64 +133,59 @@ function init() {
             })
     }
 
+    const x_trafficSign = [45, 500, -600];
+    const z_trafficSign = [-140, 455, 455];
 
+    for (let i = 0; i < x_trafficSign.length; i++)
+    {
+        loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
+                    '/assets/Building/OBJ/TrafficSign3.mtl')
+        .then(model => {
+        model.position.x = x_trafficSign[i]++
+        model.position.z = z_trafficSign[i]++
+        model.scale.x = 45
+        model.scale.y = 45
+        model.scale.z = 45
 
+        scene.add(model)
+        })
+    }
 
+    const x_trafficLight = [-500, -600, -600, -500, 500, 600, 600, 500];
+    const z_trafficLight = [-140, -140, -50, -50, -140, -140, -50, -50];
 
+    for(let i = 0; i < x_trafficLight.length; i++)
+    {
+        loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
+                    '/assets/Building/OBJ/TrafficLight.mtl')
+        .then(model => {
+        model.position.x = x_trafficLight[i]++
+        model.position.z = z_trafficLight[i]++
+        model.scale.x = 45
+        model.scale.y = 45
+        model.scale.z = 45
 
-        const x_trafficSign = [45, 500, -600];
-        const z_trafficSign = [-140, 455, 455];
+        scene.add(model)
+        })
+    }
 
-        for (let i = 0; i < x_trafficSign.length; i++)
-        {
-            loadObjModel('/assets/Building/OBJ/TrafficSign3.obj',
-                        '/assets/Building/OBJ/TrafficSign3.mtl')
-            .then(model => {
-            model.position.x = x_trafficSign[i]++
-            model.position.z = z_trafficSign[i]++
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
+    const x_trafficCone = [-1000, 1000, 1000, -1000, 0];
+    const z_trafficCone = [500, 500, -100, -100, -950];
 
-            scene.add(model)
-            })
-        }
+    for(let i = 0; i < x_trafficCone.length; i++)
+    {
+        loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
+                    '/assets/Building/OBJ/TrafficCone.mtl')
+        .then(model => {
+        model.position.x = x_trafficCone[i]++
+        model.position.z = z_trafficCone[i]++
+        model.scale.x = 45
+        model.scale.y = 45
+        model.scale.z = 45
 
-        const x_trafficLight = [-500, -600, -600, -500, 500, 600, 600, 500];
-        const z_trafficLight = [-140, -140, -50, -50, -140, -140, -50, -50];
-
-        for(let i = 0; i < x_trafficLight.length; i++)
-        {
-            loadObjModel('/assets/Building/OBJ/TrafficLight.obj',
-                        '/assets/Building/OBJ/TrafficLight.mtl')
-            .then(model => {
-            model.position.x = x_trafficLight[i]++
-            model.position.z = z_trafficLight[i]++
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-            })
-        }
-    
-        const x_trafficCone = [-1000, 1000, 1000, -1000, 0];
-        const z_trafficCone = [500, 500, -100, -100, -950];
-
-        for(let i = 0; i < x_trafficCone.length; i++)
-        {
-            loadObjModel('/assets/Building/OBJ/TrafficCone.obj',
-                        '/assets/Building/OBJ/TrafficCone.mtl')
-            .then(model => {
-            model.position.x = x_trafficCone[i]++
-            model.position.z = z_trafficCone[i]++
-            model.scale.x = 45
-            model.scale.y = 45
-            model.scale.z = 45
-
-            scene.add(model)
-            })
-        }
+        scene.add(model)
+        })
+    }
 
 
     // END LOADER =====================================================
@@ -287,7 +276,7 @@ function createScene() {
 
     // Add a fog effect to the scene; same color as the
     // background color used in the style sheet
-    scene.fog = new THREE.Fog(0xbadbe4, 700, 1400);
+    // scene.fog = new THREE.Fog(0xbadbe4, 700, 1400);
 
     // Create the camera
     aspectRatio = WIDTH / HEIGHT;
@@ -811,6 +800,15 @@ function updateRenderShadowPos() {
  * Handles controls, game loop, and object collisions
  */
 
+function updateSepur() {
+    if(sepur){
+        console.log(sepur.position)
+        // sepur.position.x -=10;
+        // sepur.position.y = -25
+
+    }
+}
+
 function loop(t) {
     // console.log(t);
 
@@ -829,6 +827,7 @@ function loop(t) {
     // method 1
     // handle car movement and collisions
     car.update();
+    updateSepur()
 
     // handle all growth animations
     animateGrow();
