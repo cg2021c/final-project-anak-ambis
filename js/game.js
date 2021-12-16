@@ -13,6 +13,7 @@ import { FBXLoader } from './FBXLoader.js'
  * Survival driving game, created by Alvin Wan (alvinwan.com)
  * modified by Grafkom 2021 T.Informatika ITS
  */
+ var gerak = 1
 
 var bodyColor = Colors.brown;
 var roofColor = Colors.brown;
@@ -102,14 +103,16 @@ function init() {
             })
     });
 
-    loadFbxModel('/assets/city/' + 'train' + '.fbx')
+    loadFbxModel('/assets/city/CargoTrain_Front.fbx')
     .then(model => {
-        model.position.x = -3000
-        model.position.y = 20
-        model.position.z = -100
-        model.scale.x = 0.5
-        model.scale.y = 0.5
-        model.scale.z = 0.5
+        model.position.x = 1000
+        model.position.y = 15
+        model.position.z = 700
+        model.scale.x = 0.35
+        model.scale.y = 0.35
+        model.scale.z = 0.35
+
+        model.rotation.y = 0
 
         scene.add(model)
         sepur = model
@@ -276,7 +279,7 @@ function createScene() {
 
     // Add a fog effect to the scene; same color as the
     // background color used in the style sheet
-    // scene.fog = new THREE.Fog(0xbadbe4, 700, 1400);
+    scene.fog = new THREE.Fog(0xbadbe4, 700, 1400);
 
     // Create the camera
     aspectRatio = WIDTH / HEIGHT;
@@ -801,10 +804,27 @@ function updateRenderShadowPos() {
  */
 
 function updateSepur() {
+
     if(sepur){
-        console.log(sepur.position)
-        // sepur.position.x -=10;
-        // sepur.position.y = -25
+        if(sepur.position.x <= -1600){
+            gerak = 1
+
+        }
+        else if(sepur.position.x >= 1600){
+            gerak = -1
+
+        }
+        // else{
+        //     gerak = -gerak
+        // }
+
+        if(gerak == 1){
+            sepur.position.x +=10;
+            sepur.rotation.y = 3.14
+        }else if(gerak == -1){
+            sepur.position.x -=10;
+            sepur.rotation.y = 0
+        }
 
     }
 }
@@ -838,6 +858,8 @@ function loop(t) {
 
     // if(!isLevelEnd)
         updateCamPos(t);
+        // camera.position.set(0, 1200 , -1000)
+        // camera.lookAt(0,100,-200)
     
     updateRenderShadowPos();
 
