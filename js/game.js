@@ -57,12 +57,13 @@ var scene,
     camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
     renderer, container;
 var sepur;
-const GROUND_X = 2000, GROUND_Z = 2000;
+const GROUND_X = 4000, GROUND_Z = 4000;
 const clockMonster = new THREE.Clock()
 const clockTank = new THREE.Clock()
 
 const surabaya = [
-    'city-new-ver',
+    // 'city-new-ver',
+    'big-city-new-ver (1)',
     'rail',
     'farms'
 ];
@@ -460,7 +461,7 @@ function Car() {
 
     this.mesh.add(body)
 
-    loadFbxModel('/assets/tankfbx/Tank3.fbx').then(tank => {
+    loadFbxModel('/assets/tankfbx/Tank2.fbx').then(tank => {
         // console.log(tank)
 
         tank.animations.forEach(anim => {
@@ -806,11 +807,11 @@ function updateRenderShadowPos() {
 function updateSepur() {
 
     if(sepur){
-        if(sepur.position.x <= -1600){
+        if(sepur.position.x <= -(GROUND_X+400)){
             gerak = 1
 
         }
-        else if(sepur.position.x >= 1600){
+        else if(sepur.position.x >= (GROUND_X+400)){
             gerak = -1
 
         }
@@ -819,10 +820,10 @@ function updateSepur() {
         // }
 
         if(gerak == 1){
-            sepur.position.x +=10;
+            sepur.position.x +=15;
             sepur.rotation.y = 3.14
         }else if(gerak == -1){
-            sepur.position.x -=10;
+            sepur.position.x -=15;
             sepur.rotation.y = 0
         }
 
@@ -897,8 +898,8 @@ function createControls() {
                 car.moveBackward();
             }
             if (key == 90){
-                console.log("NOSSS")
-                car.maxSpeed = 12.
+                // console.log("NOSSS")
+                car.maxSpeed = 15.
                 car.acceleration = 5
             }
         }
@@ -922,7 +923,7 @@ function createControls() {
                 car.stopBackward();
             }
             if (key == 90){
-                console.log("NOSSS MATI")
+                // console.log("NOSSS MATI")
                 car.maxSpeed = 5.
                 car.acceleration = 0.9
             }
@@ -964,17 +965,7 @@ function checkCarFall(){
 
         if(isLevelEnd){
             isLevelEnd = false
-            // endCar();
-
-            // setTimeout(() => {
-                
-            // }, 5000);
-            resetGame();    
-
-            // endLevel()
-            // setTimeout(() => {
-            //     createCars()
-            // }, 2000);
+            resetGame();   
 
         }
         else{
@@ -987,7 +978,7 @@ function checkCarFall(){
             }
     
             if(isFall){
-                console.log("JATUHHHHHH")
+                // console.log("JATUHHHHHH")
 
                 car.mesh.rotation.z = -1.57
                 car.mesh.position.y-=10
@@ -1074,7 +1065,7 @@ function resetGame() {
     resetTimer();
 
     // added in step 2
-    fuelLeft = 100;
+    fuelLeft = 1000;
 
     // added in step 3
     if (score > record) {
@@ -1108,7 +1099,7 @@ function updateTimer() {
     updateTimeDisplay();
 
     // Added in step 2
-    // fuelLeft -= 5;
+    fuelLeft -= 5;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
@@ -1322,36 +1313,5 @@ function animateShrink() {
     }
 }
 
-// TODO: add times of day
-// TODO: fix object collision weirdness (possible due to rotated objects)
-
 //init();  // uncomment for JSFiddle, wraps code in onLoad eventListener
 window.addEventListener('load', init, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * 
- * 	lerp( v, alpha ) {
-
-		this.x += ( v.x - this.x ) * alpha;
-		this.y += ( v.y - this.y ) * alpha;
-		this.z += ( v.z - this.z ) * alpha;
-
-		return this;
-
-	}
- */
