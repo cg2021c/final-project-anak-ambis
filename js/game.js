@@ -841,13 +841,18 @@ function createControls() {
             if (key == down) {
                 car.moveBackward();
             }
-            if (ev.keyCode == 32) freeze = true;
-            if (ev.keyCode == 33) camPlusY += 0.1;
-            if (ev.keyCode == 34) camPlusY -= 0.1;
-            if (ev.keyCode == 37) camPlusX -= 0.1; // Left
-            if (ev.keyCode == 38) camPlusZ -= 0.1; // Up
-            if (ev.keyCode == 39) camPlusX += 0.1; // Right
-            if (ev.keyCode == 40) camPlusZ += 0.1; // Down
+            if (key == 90){
+                // console.log("NOSSS")
+                car.maxSpeed = 12.
+                car.acceleration = 5
+            }
+            // if (ev.keyCode == 32) freeze = true;
+            // if (ev.keyCode == 33) camPlusY += 0.1;
+            // if (ev.keyCode == 34) camPlusY -= 0.1;
+            // if (ev.keyCode == 37) camPlusX -= 0.1; // Left
+            // if (ev.keyCode == 38) camPlusZ -= 0.1; // Up
+            // if (ev.keyCode == 39) camPlusX += 0.1; // Right
+            // if (ev.keyCode == 40) camPlusZ += 0.1; // Down
         }
     );
 
@@ -867,6 +872,11 @@ function createControls() {
             }
             if (key == down) {
                 car.stopBackward();
+            }
+            if (key == 90){
+                // console.log("NOSSS MATI")
+                car.maxSpeed = 5.
+                car.acceleration = 0.9
             }
         }
     );
@@ -1030,10 +1040,10 @@ function startTimer() {
 
 function updateTimer() {
     // time -= 1;
-    updateTimeDisplay();
+    // updateTimeDisplay();
 
     // Added in step 2
-    // fuelLeft -= 5;
+    fuelLeft -= 5;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
