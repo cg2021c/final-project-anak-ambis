@@ -1065,7 +1065,7 @@ function resetGame() {
     resetTimer();
 
     // added in step 2
-    fuelLeft = 1000;
+    fuelLeft = 100;
 
     // added in step 3
     if (score > record) {
