@@ -30,6 +30,9 @@ var able = true;
 var currentPosition = new THREE.Vector3(0, 800, 450);
 var currentLookat = new THREE.Vector3(150, 350, 350);
 
+var isLevelEnd = false
+
+
 
 function wantLerp(resx, resy, resz, dest, alpha) {
     
@@ -414,8 +417,8 @@ function Car() {
     this.currAnim = 3
 
     var direction = new THREE.Vector3(1., 0., 0.);
-    var maxSpeed = 5.;
-    var acceleration = 0.9;
+    this.maxSpeed = 5.;
+    this.acceleration = 0.9;
     var currentSpeed = 0;
     var steeringAngle = Math.PI / 100;
 
@@ -521,13 +524,13 @@ function Car() {
             is_moving = false;
         }
 
-        // update speed according to acceleration
+        // update speed according to this.acceleration
         if (movement.forward) {
             this.switchAnim(3)
-            currentSpeed = Math.min(maxSpeed, currentSpeed + acceleration);
+            currentSpeed = Math.min(this.maxSpeed, currentSpeed + this.acceleration);
         } else if (movement.backward) {
             this.switchAnim(2)
-            currentSpeed = Math.max(-maxSpeed, currentSpeed - acceleration);
+            currentSpeed = Math.max(-this.maxSpeed, currentSpeed - this.acceleration);
         } else {
             this.stopAnim()
         }
@@ -535,13 +538,13 @@ function Car() {
         // update current position based on speed
         if (is_moving) {
             sign = currentSpeed / Math.abs(currentSpeed);
-            currentSpeed = Math.abs(currentSpeed) - acceleration / 1.5;
+            currentSpeed = Math.abs(currentSpeed) - this.acceleration / 1.5;
             currentSpeed *= sign;
 
             // update and apply rotation based on speed
             if (is_turning) {
                 currentAngle = movement.left ? -steeringAngle : steeringAngle;
-                currentAngle *= currentSpeed / maxSpeed;
+                currentAngle *= currentSpeed / this.maxSpeed;
                 R = computeR(currentAngle);
                 direction = direction.applyMatrix3(R);
                 this.mesh.rotation.y -= currentAngle;
@@ -564,7 +567,8 @@ function Car() {
     this.collidable = body;
 
     this.reset = function() {
-        car.mesh.position.set(-300, 25, -100);
+        car.mesh.position.set(-300, 25, -150);
+        car.mesh.rotation.set(0, 0, 0);
         direction = new THREE.Vector3(1., 0., 0.);
         currentSpeed = 0;
         movement['forward'] = movement['backward'] = false
@@ -578,7 +582,7 @@ function Car() {
  */
 function createCar() {
     car = new Car();
-    scene.add(car.mesh);
+    scene.add(car.mesh)
 }
 
 /**
@@ -700,6 +704,7 @@ function isNaN(x) {
  };
 
 function updateCamPos(timeElapsed) {
+    // console.log("updateCamPOS")
     const idealOffset = _CalculateIdealOffset();
     const idealLookat = _CalculateIdealLookat();
 
@@ -802,7 +807,10 @@ function loop(t) {
 
     // render the scene
     renderer.render(scene, camera);
-    updateCamPos(t);
+
+    // if(!isLevelEnd)
+        updateCamPos(t);
+    
     updateRenderShadowPos();
 
     // check global collisions
@@ -839,17 +847,10 @@ function createControls() {
                 car.moveBackward();
             }
             if (key == 90){
-                // console.log("NOSSS")
+                console.log("NOSSS")
                 car.maxSpeed = 12.
                 car.acceleration = 5
             }
-            // if (ev.keyCode == 32) freeze = true;
-            // if (ev.keyCode == 33) camPlusY += 0.1;
-            // if (ev.keyCode == 34) camPlusY -= 0.1;
-            // if (ev.keyCode == 37) camPlusX -= 0.1; // Left
-            // if (ev.keyCode == 38) camPlusZ -= 0.1; // Up
-            // if (ev.keyCode == 39) camPlusX += 0.1; // Right
-            // if (ev.keyCode == 40) camPlusZ += 0.1; // Down
         }
     );
 
@@ -871,7 +872,7 @@ function createControls() {
                 car.stopBackward();
             }
             if (key == 90){
-                // console.log("NOSSS MATI")
+                console.log("NOSSS MATI")
                 car.maxSpeed = 5.
                 car.acceleration = 0.9
             }
@@ -910,28 +911,47 @@ function checkCollisions() {
 function checkCarFall(){
     if(car.mesh.position){
         var isFall = false
-        if(car.mesh.position.x > GROUND_X/2 || car.mesh.position.x < -GROUND_X/2){
-            isFall = true
+
+        if(isLevelEnd){
+            isLevelEnd = false
+            // endCar();
+
+            // setTimeout(() => {
+                
+            // }, 5000);
+            resetGame();    
+
+            // endLevel()
+            // setTimeout(() => {
+            //     createCars()
+            // }, 2000);
+
         }
-        if(car.mesh.position.z > GROUND_Z/2 || car.mesh.position.z < -GROUND_Z/2){
-            isFall = true
-        }
+        else{
+            // console.log(car.mesh.position)
+            if(car.mesh.position.x > GROUND_X/2 || car.mesh.position.x < -GROUND_X/2){
+                isFall = true
+            }
+            if(car.mesh.position.z > GROUND_Z/2 || car.mesh.position.z < -GROUND_Z/2){
+                isFall = true
+            }
+    
+            if(isFall){
+                console.log("JATUHHHHHH")
 
-        if(isFall){
-            car.mesh.rotation.z = -1.57
-            car.mesh.position.y-=10
-
-            camera.position.set(car.mesh.position.x, 400, car.mesh.position.z);
-            camera.lookAt(car.mesh.position.x, car.mesh.position.y, car.mesh.position.z);
-
-            if(car.mesh.position.y < -100){
-                isFall = false
-                endLevel()
+                car.mesh.rotation.z = -1.57
+                car.mesh.position.y-=10
+    
+                camera.position.set(car.mesh.position.x, 400, car.mesh.position.z);
+                camera.lookAt(car.mesh.position.x, car.mesh.position.y, car.mesh.position.z);
+    
+                if(car.mesh.position.y < -1000){
+                    isFall = false
+                    isLevelEnd = true
+                }
             }
         }
     }
-    // else
-    //     console.log("no car")
 }
 
 function objectInBound(object, objectList) { // TODO: annotate
@@ -981,20 +1001,18 @@ function createLevel() {
 }
 
 function endLevel() {
+    console.log("END LEVEL")
     
     fuel.switchAnim(2);
 
     setTimeout(() => {
         endFuels();
         endTrees();
-        endCar();
 
         updateStatus();
         stopTimer();
         setTimeout(createLevel, 1500);
-        setTimeout(createCars, 2000);
-
-
+        // setTimeout(createCars, 2000);
         
     }, 1000);
 }
@@ -1037,10 +1055,10 @@ function startTimer() {
 
 function updateTimer() {
     // time -= 1;
-    // updateTimeDisplay();
+    updateTimeDisplay();
 
     // Added in step 2
-    fuelLeft -= 5;
+    // fuelLeft -= 5;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
@@ -1164,7 +1182,7 @@ function createCars() {
         var y = Math.random() * 400 - 200;
         createCar();
         startGrowth(car.mesh, 50, 10, 1);
-        console.log("Car created ", car.mesh.position)
+        // console.log("Car created ", car.mesh.position)
 
 }
 
