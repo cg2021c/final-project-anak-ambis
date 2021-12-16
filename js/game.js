@@ -1097,7 +1097,7 @@ function updateTimer() {
     updateTimeDisplay();
 
     // Added in step 2
-    fuelLeft -= 5;
+    fuelLeft -= 1;
     updateFuelDisplay();
 
     if (time <= 0 || fuelLeft <= 0) {
@@ -1128,7 +1128,9 @@ function stopTimer() {
 var fuelLeft;
 
 function updateStatus() {
-    fuelLeft = Math.min(100, fuelLeft + 25);
+    // fuelLeft = Math.min(100, fuelLeft + 25);
+    fuelLeft = 100
+    
     updateFuelDisplay();
 
     // added in step 3
