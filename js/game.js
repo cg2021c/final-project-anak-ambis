@@ -117,7 +117,7 @@ function init() {
 
         scene.add(model)
         sepur = model
-        console.log("Sepur Loaded")
+        // console.log("Sepur Loaded")
     });
 
     const x_tree = [150, -150, 450, -450, 450, -450, 450, -450, 450, -450, -150, 150];
@@ -503,7 +503,7 @@ function Car() {
                 this.animReady = true;
             }
         } else {
-            console.warn("Animation not available")
+            // console.warn("Animation not available")
         }
 
     }
@@ -666,7 +666,7 @@ function Fuel() {
 
     this.mesh.add(slab);
 
-    loadFbxModel('../assets/monsterfbx/Dragon.fbx').then(monster => {
+    loadFbxModel('./assets/monsterfbx/Dragon.fbx').then(monster => {
         // console.log(monster)
         monster.animations.forEach(anim => {
             this.animationArr.push(anim)
@@ -706,7 +706,7 @@ function Fuel() {
                 this.animReady = true;
             }
         } else {
-            console.log("this anim not available")
+            // console.log("this anim not available")
         }
 
     }
@@ -836,13 +836,13 @@ function loop(t) {
     if (fuel.modelReady) {
         mixer.update(clockMonster.getDelta())
     } else {
-        console.warn("MODEL Not Ready")
+        // console.warn("MODEL Not Ready")
     }
 
     if (car.modelReady) {
         mixerTank.update(clockTank.getDelta())
     } else {
-        console.warn("MODEL Not Ready")
+        // console.warn("MODEL Not Ready")
     }
 
     // method 1
