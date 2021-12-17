@@ -589,7 +589,7 @@ function Car() {
     this.collidable = body;
 
     this.reset = function() {
-        car.mesh.position.set(-300, 25, -150);
+        car.mesh.position.set(-300, 25, -100);
         car.mesh.rotation.set(0, 0, 0);
         direction = new THREE.Vector3(1., 0., 0.);
         currentSpeed = 0;
